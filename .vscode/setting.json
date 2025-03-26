@@ -1,0 +1,15 @@
+{
+    "python.defaultInterpreterPath": "/usr/local/bin/python",
+    "jupyter.jupyterServerType": "local",
+  
+    "vim.insertModeKeyBindings": [
+      {
+        "before": ["j", "j"],
+        "after": ["<Esc>"]
+      }
+    ],
+  
+    "vim.hlsearch": true
+  }
+  
+  
