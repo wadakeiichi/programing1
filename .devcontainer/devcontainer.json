@@ -7,7 +7,6 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "google.gemini-code-assist",
         "ms-python.python",
         "ms-vscode-remote.remote-containers",
         "MS-CEINTL.vscode-language-pack-ja",
