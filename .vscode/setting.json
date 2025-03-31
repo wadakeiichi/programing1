@@ -1,4 +1,5 @@
 {
+    "jupyter.kernelPickerType": "mru", 
     "python.defaultInterpreterPath": "/usr/local/bin/python",
     "jupyter.jupyterServerType": "local",
   
