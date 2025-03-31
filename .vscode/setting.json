@@ -12,7 +12,7 @@
   "vim.hlsearch": true,
   "vim.startInInsertMode": true,
 
-  "[jupyter]": {
+  "[notebook]": {
     "vim.enable": false
   }
 }
