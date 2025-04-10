@@ -1,7 +1,7 @@
 {
   "name": "Python + Unix",
   "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bullseye",
-  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y man less tree curl wget unzip zip nano htop && pip install --upgrade pip && pip install -r requirements.txt && pip install jupyter ipykernel && sudo ython -m ipykernel install --name devcontainer-kernel --display-name 'Python (with numpy)'"
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y man less tree curl wget unzip zip nano htop && pip install --upgrade pip && pip install -r requirements.txt && pip install jupyter ipykernel && sudo python -m ipykernel install --name devcontainer-kernel --display-name 'Python (with numpy)'"
 
 
   "customizations": {
