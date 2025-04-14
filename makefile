@@ -1,2 +1,2 @@
 update-devcontainer:
-	.devcontainer/update_devcontainer.sh
+	bash .devcontainer/update_devcontainer.sh
