@@ -19,4 +19,8 @@
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {}  // git, curl, unzipなどが入る
   }
+  "settings": {
+  "python.defaultInterpreterPath": "/usr/local/bin/python"
+  }
+
 }
