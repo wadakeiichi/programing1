@@ -1,11 +1,12 @@
 #!/bin/bash
-set -e  # エラーが発生したらスクリプト終了
+set -e
 
 echo "🌀 .devcontainer の最新化を開始します..."
 
-# 作業中の変更を一時退避
+# 作業ツリーを stash に退避
 echo "🗂 作業ツリーを stash に退避します..."
-git stash push -m "devcontainer update" >/dev/null
+stash_result=$(git stash push -m "devcontainer update")
+echo "$stash_result"
 
 # リモートの最新を取得
 echo "🌐 リモートから最新を取得します..."
@@ -16,7 +17,11 @@ echo "🔁 .devcontainer を最新の origin/main で上書きします..."
 git checkout origin/main -- .devcontainer
 
 # 作業内容を復元
-echo "📦 作業内容を復元します..."
-git stash pop >/dev/null
+if [[ "$stash_result" != "No local changes to save" ]]; then
+  echo "📦 作業内容を復元します..."
+  git stash pop >/dev/null
+else
+  echo "📦 復元不要：スタッシュは作成されませんでした"
+fi
 
 echo "✅ 完了しました！.devcontainer は最新状態になりました。"
