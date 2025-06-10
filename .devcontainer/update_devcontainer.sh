@@ -3,13 +3,28 @@ set -e
 
 echo "🌀 .devcontainer の最新化を開始します..."
 
-# ローカルの .devcontainer を削除（変更があっても問答無用で破棄）
-echo "🧹 ローカルの .devcontainer を削除します..."
-rm -rf .devcontainer
+# Git index.lock の削除（残っていれば）
+if [ -f .git/index.lock ]; then
+  echo "🔓 index.lock を削除します..."
+  rm -f .git/index.lock
+fi
 
-# リモートから取得（強制）
-echo "🌐 リモートから最新の .devcontainer を取得します..."
-git fetch origin
-git checkout origin/main -- .devcontainer
+# ネットワーク接続（fetch）を試す
+echo "🌐 リモートの接続を確認中..."
+if git fetch origin &>/dev/null; then
+  echo "✅ 接続成功：更新を実行します"
 
-echo "✅ 完了しました！.devcontainer は教員用で上書きされました。"
+  # ローカルの .devcontainer を削除
+  echo "🧹 ローカルの .devcontainer を削除します..."
+  rm -rf .devcontainer
+
+  # リモートから .devcontainer を取得
+  echo "📥 リモートから .devcontainer を取得します..."
+  git checkout origin/main -- .devcontainer
+
+  echo "✅ 完了しました！.devcontainer は教員用で上書きされました。"
+
+else
+  echo "⚠️ ネットワーク接続または git fetch に失敗しました。更新はスキップされました。"
+  exit 0
+fi
