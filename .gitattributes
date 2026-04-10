@@ -1,1 +1,6 @@
 README.md merge=ours
+
+# シェルスクリプトは常に LF で保存（Windows での CRLF 問題対策）
+*.sh text eol=lf
+makefile text eol=lf
+Makefile text eol=lf
