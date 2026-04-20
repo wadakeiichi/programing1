@@ -25,7 +25,7 @@
 |----|--------|------|-----------|
 | 1 | **CUI 基礎（1）** | CUI と GUI の比較・ターミナル／PowerShell の起動・プロンプトの読み方・ディレクトリとパス（絶対／相対）・基本コマンド（pwd, ls, cd, mkdir, cp, mv, rm, cat） | `CUI実習_講義資料_Week1-2.pdf`（Week 1 部分）／練習問題 1〜3 |
 | 2 | **CUI 基礎（2）＋環境設定** | シェルとは（bash／zsh／PowerShell）・シェルスクリプト基礎（変数・引数・if・for）・chmod・git clone による教材取得・VS Code 起動・Dev Container の構築と確認 | `CUI実習_講義資料_Week1-2.pdf`（Week 2 部分）・`初期設定ガイド2026ver1.pdf`／練習問題 1〜4 |
-| 3 | **Python 入門＋書き方のルール** | `.py` ファイルの作成と `# %%` セル実行・数値演算・変数と型・コロン `:` の役割・インデントのルール・空白の使い方・コメント `#` の書き方・よくあるエラーの読み方 | `Python基礎_週別教材.md`・`week3b.md`／練習問題 0 |
+| 3 | **Python 入門＋書き方のルール** | 前半（3a）: Week 1〜2 の環境設定の確認（ターミナル・git・VS Code・Dev Container・Python セル実行）／後半（3b）: `.py` ファイルの作成と `# %%` セル実行・数値演算・変数と型・コロン `:` の役割・インデントのルール・空白の使い方・コメント `#` の書き方・よくあるエラーの読み方 | `week3a.md`・`week3b.md`／練習問題 0 |
 | 4 | **Python 環境と基本的な数値計算** | 変数と型（int, float, complex, str）・算術演算子・print と f-string・リスト・タプル・for ループ・import と math モジュール | `week4.md`／練習問題 1 |
 | 5 | **NumPy 配列とベクトル演算** | 配列と数学のベクトル・行列の関係・配列の作成（array, linspace, zeros, arange）・ブロードキャスト演算・集計関数（max, mean, sum）・for ループとの速度比較 | `week5.md`／練習問題 2 |
 | 6 | **Matplotlib による 2D 可視化** | 折れ線グラフ（plot）・軸ラベル・凡例・グリッド・画像保存（savefig）・複数パネル（subplots）・ヒストグラム | `week6.md`／練習問題 3 |
@@ -61,8 +61,8 @@
 |-----------|-----------|------|
 | `CUI実習_講義資料_Week1-2.pdf` | Week 1〜2 | CUI 基礎の講義資料・練習問題 |
 | `初期設定ガイド2026ver1.pdf` | Week 2 | VS Code・Dev Container の初期設定手順 |
-| `Python基礎_週別教材.md` | Week 3 | `.py` ファイルの作り方と `# %%` セル実行の説明 |
-| `week3b.md` | Week 3 | コロン・インデント・空白のルール |
+| `week3a.md` | Week 3（前半） | Week 1〜2 の環境設定チェック（ターミナル・git・VS Code・Dev Container・Python） |
+| `week3b.md` | Week 3（後半） | `.py` ファイルと `# %%` セル実行・コロン・インデント・空白・コメントのルール |
 | `week4.md` | Week 4 | 変数・演算子・リスト・for ループ・import・math |
 | `week5.md` | Week 5 | NumPy 配列の概念と演算 |
 | `week6.md` | Week 6 | Matplotlib による 2D グラフ描画 |
