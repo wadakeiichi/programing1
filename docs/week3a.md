@@ -1,8 +1,7 @@
 # Week 3a — 環境設定チェック（Week 1〜2 の確認）
 
 **対象**: プログラミング I 受講生
-**所要時間**: 5〜10 分程度
-**目的**: Week 3b（Python の書き方のルール）に進む前に、Week 2 で設定したはずの VS Code と Dev Container が動くことを確認する。
+**目的**: 初期設定のあと、　Week 3b（Python の書き方のルール）に進む前に、設定したはずの VS Code と Dev Container が動くことを確認する。
 
 ---
 
@@ -16,22 +15,14 @@
 
 ## 1. VS Code が起動するか
 
-### 1.1 教材フォルダを VS Code で開く
+### 1.1 授業用フォルダ(programing1)を VS Code で開く
 
-ターミナルから（あるいは VS Code の「フォルダを開く」から）、Week 2 で `git clone` した `programing1` フォルダを開きます。
-
-```bash
-cd ~/<クローンした場所>/programing1
-code .
-```
 
 **期待**: VS Code が起動し、左のエクスプローラに `programing1` のファイル一覧（`README.md`, `.devcontainer/`, `docs/` など）が見える。
 
-> ❗ `code` コマンドが無い場合は、VS Code を起動して `Cmd/Ctrl + Shift + P` → **「Shell Command: Install 'code' command in PATH」** を実行。
-
 ### 1.2 必須の拡張機能
 
-拡張機能パネル（`Cmd/Ctrl + Shift + X`）で以下が **インストール済み** になっていることを確認：
+拡張機能パネル (左の積み木みたいなアイコン）（もしくは　`cntl + Shift + X` (win)`⌘ + Shift + X` (mac)）で以下が **インストール済み** になっていることを確認：
 
 - `Python`（ms-python.python）
 - `Dev Containers`（ms-vscode-remote.remote-containers）
@@ -49,11 +40,10 @@ code .
 
 1. Launchpad（または「アプリケーション」フォルダ）から **Docker** アイコンをクリックして起動。
 2. メニューバー右上（時計の近く）に **クジラのアイコン 🐳** が出ることを確認。
-3. クジラをクリック → 左上のステータスが **「Docker Desktop is running」** になっていれば OK。
-4. macOS の標準「ターミナル」を開いて、以下を実行:
+3. macOS の標準「ターミナル」を開いて、以下を実行:
 
 ```bash
-docker --version
+docker -v
 docker ps
 ```
 
@@ -61,11 +51,10 @@ docker ps
 
 1. スタートメニューから **「Docker Desktop」** を起動（または既にインストール済みなら自動起動している場合あり）。
 2. タスクトレイ（画面右下の△マークの中）に **クジラのアイコン 🐳** が出るまで待つ（初回は 30 秒〜1 分）。
-3. クジラを右クリック → ステータスが **「Docker Desktop is running」** になっていれば OK。
-4. **PowerShell**（または Windows Terminal）を開いて、以下を実行:
+3. **PowerShell**（または Windows Terminal）を開いて、以下を実行:
 
 ```powershell
-docker --version
+docker -v
 docker ps
 ```
 
@@ -76,7 +65,7 @@ Docker version 27.x.x, ...
 CONTAINER ID   IMAGE   COMMAND   ...
 ```
 
-**期待**: `docker --version` でバージョンが表示され、`docker ps` がエラーなく表形式のヘッダを返す（中身は空でも OK）。
+**期待**: `docker -v` でバージョンが表示され、`docker ps` がエラーなく表形式のヘッダを返す（中身は空でも OK）。
 
 > ❗ `Cannot connect to the Docker daemon` と出たら、**Docker Desktop のアプリがまだ起動していない／起動中** です。クジラのアイコンが「running」になるまで 1 分ほど待ってからもう一度試してください。
 > ❗ **WSL 2 が必要**: Windows の初回起動時に WSL 2 のインストールを促されたら指示に従ってください。WSL 2 が未設定だと Docker は起動しません。
@@ -85,14 +74,14 @@ CONTAINER ID   IMAGE   COMMAND   ...
 ### 2.2 教材の Dev Container を開く
 
 1. VS Code で `programing1` フォルダを開いた状態にする。
-2. 左下の緑色の「><」マーク、または `Cmd/Ctrl + Shift + P` → **「Dev Containers: Reopen in Container」** を実行。
+2. 左下の緑色の「><」マーク、または `Cmd/Ctrl + Shift + P` → **「Dev Containers: Reopen in Container」** (日本語だと、**開発コンテナーを再起動**）を実行。
 3. 初回は数分〜十数分かかる（Docker イメージのビルドと `pip install`）。
 
 **期待**: ウィンドウ左下に **`Dev Container: Python + Unix`** と表示される。
 
 ### 2.3 コンテナの中に居ることを確認
 
-VS Code でターミナルを開く（`` Ctrl + ` ``）→ 以下を実行：
+VS Code でターミナルを開く（`` Ctrl + ` ``）→ 以下を実行 (**--version は、ハイフン２つ**）：
 
 ```bash
 uname -a          # Linux ... と表示される
@@ -103,37 +92,13 @@ python --version  # Python 3.12.x
 
 ---
 
-## 3. トラブルシューティング早見表
-
-| 症状 | 対処 |
-|------|------|
-| `code` コマンドが無い | VS Code のコマンドパレットから「Install 'code' command in PATH」 |
-| 拡張機能が足りない | 拡張機能パネルから `Python` / `Dev Containers` / `Jupyter` を検索してインストール |
-| `docker: command not found` | Docker Desktop のインストールから見直す |
-| `docker ps` が `Cannot connect to the Docker daemon` | Docker Desktop アプリが起動しているか確認 |
-| 「Reopen in Container」が出ない | 拡張機能 `Dev Containers` が未インストール |
-| コンテナのビルドが失敗 | Docker Desktop のリソース（メモリ等）設定を増やす／再起動 |
-| `uname` が Darwin を返す | コンテナの中ではなくホストで動かしている。§2.2 をやり直す |
-
----
-
-## 4. 最終チェックリスト（全部 ☑ になれば Week 3b に進めます）
-
-- [ ] VS Code で教材フォルダ `programing1` を開ける
-- [ ] 拡張機能 `Python` / `Dev Containers` / `Jupyter` がインストール済み
-- [ ] Docker Desktop が起動し、`docker ps` がエラーなく動く
-- [ ] **Reopen in Container** でコンテナに入れ、左下に `Dev Container: Python + Unix` が出ている
-- [ ] コンテナ内で `uname -a` が Linux、`python --version` が Python 3.12 系を返す
-
----
-
-## 5. 環境・教材の更新（`make` コマンド）
+## 3. 環境・教材の更新（`make` コマンド）
 
 Week 3b 以降、毎回の授業で **新しい教材（`docs/` に `week4.md`, `week5.md`, …）や `.devcontainer` の設定** が追加・更新されていきます。**各授業の開始時**（および気づいたとき）に、必ず以下の操作をしてください。
 
-### 5.1 更新方法
+### 3.1 更新方法
 
-VS Code の **Dev Container の中** でターミナルを開き（`` Ctrl + ` ``）、`programing1` フォルダで次のコマンドを打つだけです。
+VS Code の **開発コンテナー の中** でターミナルを開き（`` Ctrl + ` ``）、`programing1` フォルダで次のコマンドを打つだけです。
 
 ```bash
 make
@@ -145,7 +110,7 @@ make
 - `.devcontainer/` が更新されたときは自動で取得される（必要ならリビルド案内が出ます）
 - `.github/` `.vscode/` `makefile` `README.md` なども同時に最新化される
 
-### 5.2 実行時のメッセージ例
+### 3.2 実行時のメッセージ例
 
 ```
 🌀 教員用リポジトリから最新の教材を取得します...
@@ -158,7 +123,7 @@ make
    docs/ に新しい教材（例: week3a.md など）が入っていないか確認してください。
 ```
 
-### 5.3 注意
+### 3.3 注意
 
 - **学生が自分で作った `.py` ファイル等は削除されません。** `make` が上書きするのは教員が配布しているファイル（`docs/` や `.devcontainer/` など）だけです。
 - 一方、**教員配布ファイル（例: `docs/*.md`）を自分で書き換えてしまった場合は、`make` で上書きされて消えます。** 書き込みたいメモは別のフォルダ（例: 自分用の `notes/`）に書くようにしてください。
@@ -169,7 +134,7 @@ make
 
 ---
 
-## 6. 次回予告
+## 4. 次回予告
 
 次回 **Week 3b** では、ここまで整えた環境の上で、`.py` ファイルの書き方・コロンとインデントのルール・コメントの書き方・よくあるエラーの読み方を学びます。本資料で引っかかった点があれば、Week 3b の冒頭で解消しますので遠慮なく質問してください。
 
