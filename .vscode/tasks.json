@@ -1,0 +1,21 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Open default terminal",
+      "type": "shell",
+      "command": "echo '✓ 開発コンテナーの準備ができました。下のターミナルパネルの「＋」ボタン（または Ctrl+Shift+@ ）で新しいターミナルを開き、make などのコマンドを実行してください。'",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "focus": false,
+        "showReuseMessage": false,
+        "clear": false
+      },
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "problemMatcher": []
+    }
+  ]
+}
