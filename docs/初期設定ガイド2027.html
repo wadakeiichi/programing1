@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>2027 プログラミング I — 初期設定ガイド</title>
+<style>
+  :root {
+    --fg: #1f2328;
+    --muted: #57606a;
+    --bg: #ffffff;
+    --code-bg: #f6f8fa;
+    --code-border: #d0d7de;
+    --accent: #0969da;
+    --accent-bg: #ddf4ff;
+    --warn-bg: #fff8c5;
+    --warn-border: #d4a72c;
+    --note-border: #54aeff;
+    --table-border: #d0d7de;
+    --table-stripe: #f6f8fa;
+    --kbd-bg: #f6f8fa;
+    --kbd-border: #afb8c1;
+  }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", "Segoe UI", Roboto, sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.75;
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+    font-size: 16px;
+    word-wrap: break-word;
+  }
+  h1, h2, h3, h4 {
+    line-height: 1.35;
+    margin-top: 2em;
+    margin-bottom: 0.6em;
+    font-weight: 700;
+  }
+  h1 {
+    font-size: 1.9em;
+    border-bottom: 2px solid var(--code-border);
+    padding-bottom: 0.3em;
+    margin-top: 1.2em;
+  }
+  h2 {
+    font-size: 1.45em;
+    border-bottom: 1px solid var(--code-border);
+    padding-bottom: 0.3em;
+  }
+  h3 { font-size: 1.2em; }
+  h4 { font-size: 1.05em; color: var(--muted); }
+  p { margin: 0.8em 0; }
+  hr {
+    border: none;
+    border-top: 1px solid var(--code-border);
+    margin: 2.5em 0;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* インラインコード */
+  code {
+    font-family: "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: 4px;
+    padding: 0.1em 0.4em;
+    font-size: 0.88em;
+    color: #1f2328;
+    white-space: nowrap;
+  }
+
+  /* コードブロック (pre) — ここが PDF で重なっていた箇所 */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    margin: 1.2em 0;          /* 上下に確実な余白 */
+    font-size: 0.88em;
+    line-height: 1.55;
+    clear: both;              /* 前後の要素と物理的に分離 */
+    display: block;
+  }
+  pre code {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    font-size: inherit;
+    white-space: pre;
+    color: inherit;
+  }
+
+  /* 引用 (注意書き) */
+  blockquote {
+    margin: 1.2em 0;
+    padding: 0.6em 1em;
+    border-left: 4px solid var(--note-border);
+    background: #ddf4ff55;
+    color: var(--fg);
+    border-radius: 0 4px 4px 0;
+  }
+  blockquote.warn {
+    border-left-color: var(--warn-border);
+    background: var(--warn-bg);
+  }
+  blockquote p { margin: 0.4em 0; }
+
+  /* 表 */
+  table {
+    border-collapse: collapse;
+    margin: 1.2em 0;
+    width: 100%;
+    font-size: 0.93em;
+  }
+  th, td {
+    border: 1px solid var(--table-border);
+    padding: 8px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: var(--code-bg);
+    font-weight: 700;
+  }
+  tr:nth-child(even) td { background: var(--table-stripe); }
+
+  /* リスト */
+  ul, ol { padding-left: 1.6em; margin: 0.8em 0; }
+  li { margin: 0.25em 0; }
+  li > p { margin: 0.3em 0; }
+
+  /* キーボード風 */
+  kbd {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    background: var(--kbd-bg);
+    border: 1px solid var(--kbd-border);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 0.1em 0.5em;
+    font-size: 0.85em;
+  }
+
+  /* ASCIIアート保持用 */
+  pre.ascii { white-space: pre; }
+
+  /* セクションの強調用バッジ */
+  .os-badge { display: inline-block; margin-left: 0.2em; }
+
+  /* 目次 */
+  .toc {
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: 6px;
+    padding: 14px 22px;
+    margin: 1.5em 0 2em;
+    font-size: 0.95em;
+  }
+  .toc h2 {
+    border: 0; margin: 0 0 0.4em; padding: 0;
+    font-size: 1.1em;
+  }
+  .toc ul { padding-left: 1.2em; margin: 0.3em 0; }
+  .toc li { margin: 0.15em 0; }
+
+  @media print {
+    body { max-width: none; padding: 14mm; font-size: 11pt; }
+    pre, blockquote, table { page-break-inside: avoid; }
+    h1, h2, h3 { page-break-after: avoid; }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>2027 プログラミング I — 初期設定ガイド</h1>
+
+<blockquote>
+<p><strong>対象</strong>: 2027 年度 プログラミング I 受講生（Mac / Windows 両対応）<br>
+<strong>目的</strong>: 授業で使う開発環境（VS Code + Git + Docker Desktop + Dev Container）を構築し、全員が <strong>同じ Linux 環境</strong> で演習できるようにする<br>
+<strong>所要時間の目安</strong>: 1〜2 時間（再起動の待ち時間を含む）</p>
+</blockquote>
+
+<div class="toc">
+<h2>目次</h2>
+<ul>
+  <li>0. 全体像 / 用語の確認</li>
+  <li>Part A: 共通セットアップ（Step 1〜6）</li>
+  <li>Part B: Docker Desktop のインストール（Step 7〜8）</li>
+  <li>Part C: Dev Container を起動（Step 9〜10）</li>
+  <li>Part D: 毎回の授業での操作</li>
+  <li>付録 A: 共通の便利情報</li>
+  <li>付録 B: Windows トラブル FAQ</li>
+  <li>付録 C: macOS トラブル FAQ</li>
+  <li>つまずいたら</li>
+</ul>
+</div>
+
+<hr>
+
+<h2>0. 全体像</h2>
+
+<p>授業では「<strong>Dev Container</strong>」という仕組みを使い、受講生全員が <strong>同じ Linux 環境</strong> で Python の演習を行います。そのために以下を順番に整えます。</p>
+
+<pre class="ascii"><code>あなたの PC (Mac / Windows)
+   ├─ VS Code           ← コードを書くエディタ
+   ├─ Git               ← 教員から教材を取得・更新する仕組み
+   └─ Docker Desktop    ← Linux 環境を仮想で動かす土台
+        └─ Dev Container ← VS Code が「中で」動く統一環境
+              └─ Python / 演習ライブラリ（最初から揃っている）</code></pre>
+
+<p><strong>学生がやること</strong>:</p>
+
+<ol>
+<li>VS Code・Git・Docker Desktop を入れる</li>
+<li>教員リポジトリを <code>git clone</code> で取得</li>
+<li>VS Code から「Dev Container で開く」</li>
+<li>その中で Python コードを書いて実行する</li>
+</ol>
+
+<hr>
+
+<h2>用語の確認</h2>
+
+<table>
+<thead><tr><th>用語</th><th>役割</th></tr></thead>
+<tbody>
+<tr><td><strong>VS Code</strong></td><td>Microsoft 製のエディタ。Python・Git・Docker と統合</td></tr>
+<tr><td><strong>Git</strong></td><td>バージョン管理ツール。教員リポジトリから教材を取得</td></tr>
+<tr><td><strong>Docker</strong></td><td>仮想化基盤。「コンテナ」を作るソフト</td></tr>
+<tr><td><strong>コンテナ</strong></td><td>軽い仮想マシン。アプリと OS をまとめた箱</td></tr>
+<tr><td><strong>Dev Container</strong></td><td>VS Code 機能。コンテナの中を VS Code から直接編集・実行</td></tr>
+</tbody>
+</table>
+
+<blockquote>
+<p>英語の <strong>container</strong> は日本語で「コンテナ」とも「コンテナー」とも書きます（Microsoft 系 UI は「コンテナー」）。指すものは同じです。</p>
+</blockquote>
+
+<hr>
+
+<h1>Part A: 共通セットアップ</h1>
+
+<h2>Step 1: 自分の PC の構成を確認する</h2>
+
+<h3>🪟 Windows</h3>
+<ol>
+<li><kbd>Windows キー</kbd> + <kbd>R</kbd></li>
+<li><code>msinfo32</code> と入力 → Enter</li>
+<li>「<strong>システムの種類</strong>」を確認
+  <ul>
+    <li><code>x64 ベース PC</code> → <strong>x86_64</strong> 版インストーラを選ぶ</li>
+    <li><code>ARM ベース PC</code> → <strong>ARM</strong> 版インストーラを選ぶ</li>
+  </ul>
+</li>
+</ol>
+
+<h3>🍎 macOS</h3>
+<p>最近の MacBook（M1/M2/M3/M4 など）はすべて Apple Silicon（ARM）です。気にしなくて OK。Intel Mac の場合だけ x86_64 版を選びます（不明な場合は <strong>アップルメニュー → この Mac について</strong>で確認）。</p>
+
+<hr>
+
+<h2>Step 2: 管理者ターミナルの開き方と権限確認 🪟</h2>
+
+<blockquote><p><strong>Windows 学生のみ。Mac 学生は Step 3 へ。</strong></p></blockquote>
+
+<p>Docker Desktop と WSL2 は <strong>管理者権限が無いとインストールできません</strong>。家族と共有している PC や学内貸与 PC を使う場合は、必ず最初に確認します。</p>
+
+<h3>Step 2.1: 管理者ターミナル（管理者 PowerShell）を開く</h3>
+
+<p>これ以降の Pre-flight チェック・WSL2 セットアップ・Docker 関連の操作は、すべて <strong>「管理者として実行」されたターミナル</strong> から行います。<strong>通常のターミナルでは権限不足のため失敗します</strong>。</p>
+
+<blockquote><p>本授業では <strong>Windows 11 のみ対応</strong> しています。Windows 10 の人はまず Windows 11 への更新（無料）を済ませてから進めてください。</p></blockquote>
+
+<h4>基本の手順</h4>
+<ol>
+<li>画面左下の <strong>スタートボタン</strong>（Windows ロゴ）を <strong>右クリック</strong></li>
+<li>メニューから <strong>「ターミナル（管理者）」</strong> を選ぶ</li>
+<li>UAC（ユーザーアカウント制御）の確認画面で <strong>「はい」</strong> をクリック</li>
+</ol>
+
+<h4>代替方法</h4>
+<ul>
+<li><kbd>Windows キー</kbd> + <kbd>X</kbd> でメニューが出るので、<strong>「ターミナル（管理者）」</strong> を選ぶ</li>
+<li>スタートメニューの検索ボックスに <code>terminal</code> と入力 → 検索結果の <strong>「ターミナル」</strong> を <strong>右クリック</strong> → <strong>「管理者として実行」</strong></li>
+</ul>
+
+<h4>開けたかの確認</h4>
+<p>ウィンドウのタイトルバーに <strong>「管理者:」</strong> または <strong>「Administrator:」</strong> と表示されていれば成功。表示されていない場合は <strong>管理者ではない通常のターミナル</strong> なので、一度閉じて開き直してください。</p>
+
+<pre class="ascii"><code>✓ 「管理者: Windows PowerShell」  または  「管理者: ターミナル」  ← OK
+✗ 「Windows PowerShell」          または  「ターミナル」          ← NG（普通のターミナル）</code></pre>
+
+<blockquote>
+<p><strong>以降の手順で「管理者 PowerShell で...」と書かれている箇所は、すべて Step 2.1 の方法で開いたターミナル</strong> を指します。一度閉じてしまった場合は、毎回 Step 2.1 の手順で開き直してください。</p>
+</blockquote>
+
+<h3>Step 2.2: 管理者権限の確認</h3>
+
+<p>開いた管理者 PowerShell に、以下を貼り付けて Enter：</p>
+
+<pre><code>([Security.Principal.WindowsPrincipal] `
+    [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole( `
+    [Security.Principal.WindowsBuiltInRole] "Administrator")</code></pre>
+
+<ul>
+<li><code>True</code> → 次へ進む</li>
+<li><code>False</code> → 自分のアカウントは管理者ではない。先に <strong>家族／学内 IT 部門</strong> に管理者権限化を依頼してから先に進むこと。<strong>権限が無いまま進めると授業中に解決不可能になります</strong>。</li>
+</ul>
+
+<hr>
+
+<h2>Step 3: Pre-flight チェック 🪟</h2>
+
+<blockquote><p><strong>Windows 学生のみ。Mac 学生は Step 4 へ。</strong></p></blockquote>
+
+<p>「自分の PC は Docker を動かせる状態か」を <strong>インストールする前</strong> に一度確認します。これをやっておくと、後の Step 7 (Docker インストール) でトラブルになる確率が大幅に下がります。</p>
+
+<p><strong>管理者 PowerShell</strong>（Step 2.1 の方法で開く）に以下をまるごとコピペし、<kbd>Enter ↵</kbd> で実行：</p>
+
+<pre><code>Write-Host "=== BIOS 仮想化 ===" -ForegroundColor Cyan
+(Get-CimInstance Win32_Processor).VirtualizationFirmwareEnabled
+
+Write-Host "`n=== Windows 機能 ===" -ForegroundColor Cyan
+Get-WindowsOptionalFeature -Online -FeatureName `
+  VirtualMachinePlatform, Microsoft-Windows-Subsystem-Linux, HypervisorPlatform |
+  Select-Object FeatureName, State
+
+Write-Host "`n=== WSL ===" -ForegroundColor Cyan
+wsl --status 2>$null
+wsl -l -v 2>$null
+
+Write-Host "`n=== Hypervisor 起動設定 ===" -ForegroundColor Cyan
+bcdedit /enum | Select-String hypervisorlaunchtype
+
+Write-Host "`n=== 古い Docker の残骸 ===" -ForegroundColor Cyan
+foreach ($p in 'C:\ProgramData\DockerDesktop','C:\ProgramData\Docker','C:\Program Files\Docker') {
+  if (Test-Path $p) { "$p : 存在" } else { "$p : なし" }
+}</code></pre>
+
+<p><strong>期待される結果</strong>:</p>
+
+<table>
+<thead><tr><th>項目</th><th>期待値</th><th>違う場合</th></tr></thead>
+<tbody>
+<tr><td><code>VirtualizationFirmwareEnabled</code></td><td><code>True</code></td><td>BIOS で <strong>Intel VT-x / AMD-V (SVM)</strong> を有効化 → <strong>付録 B-1</strong></td></tr>
+<tr><td><code>VirtualMachinePlatform</code></td><td><code>Enabled</code></td><td>Step 7 の <code>wsl --install</code> で自動有効化される（OK）</td></tr>
+<tr><td><code>Microsoft-Windows-Subsystem-Linux</code></td><td><code>Enabled</code></td><td>同上</td></tr>
+<tr><td><code>HypervisorPlatform</code></td><td><code>Enabled</code></td><td>同上</td></tr>
+<tr><td><code>hypervisorlaunchtype</code></td><td><code>Auto</code></td><td>Step 7 後に <code>bcdedit /set hypervisorlaunchtype auto</code></td></tr>
+<tr><td>古い Docker 残骸</td><td>全て <strong>なし</strong></td><td>「存在」が出たら <strong>付録 B-2</strong> で削除してから次へ</td></tr>
+</tbody>
+</table>
+
+<hr>
+
+<h2>Step 4: VS Code をインストールする 🍎🪟</h2>
+
+<ol>
+<li>ブラウザで <a href="https://code.visualstudio.com/">https://code.visualstudio.com/</a> を開く</li>
+<li>自分の OS 用のインストーラをダウンロード
+  <ul>
+    <li><strong>🍎 macOS</strong>: 「Apple Silicon」or「Intel」を Step 1 の結果に合わせて選ぶ</li>
+    <li><strong>🪟 Windows</strong>: x64 ベースなら <strong>Windows</strong>、ARM なら <strong>User Installer (ARM64)</strong> を選ぶ</li>
+  </ul>
+</li>
+<li>ダウンロードしたファイルを実行してインストール
+  <ul><li><strong>🪟 Windows</strong>: 「デスクトップにアイコンを作成する」にチェック推奨</li></ul>
+</li>
+</ol>
+
+<h3>Step 4.1: VS Code の日本語化</h3>
+<ol>
+<li>VS Code を起動</li>
+<li>拡張機能パネルを開く: <strong><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd></strong> (Win) / <strong><kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd></strong> (Mac)</li>
+<li>検索ボックスに <code>Japanese Language Pack</code> と入力</li>
+<li><strong>Japanese Language Pack for Visual Studio Code</strong>（Microsoft 製）をインストール</li>
+<li>右下に「言語を変更して再起動」が出たらクリック</li>
+<li>再起動後、メニューが日本語になる</li>
+</ol>
+
+<h3>Step 4.2: 必須拡張機能を入れる（host VS Code に）</h3>
+
+<p>VS Code の <strong>拡張機能パネル</strong>（<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> / <kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>）で検索してインストール。<strong>似た名前の拡張機能が多い</strong> ので、提供元（Publisher）が <strong>Microsoft</strong> であることを確認してから入れてください。</p>
+
+<h4>必須</h4>
+<ul>
+<li><strong>Dev Containers</strong>（Microsoft 製、<code>ms-vscode-remote.remote-containers</code>）
+  <ul><li>Dev Container を開くための <strong>必須</strong> 拡張機能。これが host に無いと授業環境に入れません。</li></ul>
+</li>
+</ul>
+
+<h4>推奨（任意）</h4>
+<ul>
+<li><strong>Markdown All in One</strong>
+  <ul>
+    <li>教員配布の <code>.md</code> 教材（<code>docs/week3a.md</code> など）を読みやすく表示・編集できる</li>
+    <li>入れなくても VS Code 標準の <strong>Markdown プレビュー</strong>（<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd>）で読めるので、好みで判断して OK</li>
+  </ul>
+</li>
+</ul>
+
+<blockquote>
+<p>💡 <strong>Python・Jupyter などの開発系拡張機能は host に入れる必要はありません</strong>: 教員リポジトリの <code>.devcontainer/devcontainer.json</code> に登録済みで、Dev Container を開いた時に <strong>コンテナの中に自動インストール</strong> されます。host にはあえて入れない方が、host 環境を汚さずに済みます。</p>
+</blockquote>
+
+<hr>
+
+<h3>Step 4.3: VS Code の画面構成を覚える</h3>
+
+<p>VS Code は <strong>4 つの主要領域</strong> で構成されます。授業中、教員が「<strong>サイドバーの〜</strong>」「<strong>ステータスバーの〜</strong>」と言うので、名前を覚えておくとついていきやすいです。</p>
+
+<pre class="ascii"><code>+---+---------------+--------------------------------+
+| A |               |                                |
+| c |   Sidebar     |            Editor              |
+| t |               |                                |
+| i |               +--------------------------------+
+| v |               |                                |
+| i |               |            Panel               |
+| t |               |    (Terminal / Output / ...)   |
+| y |               |                                |
++---+---------------+--------------------------------+
+| Status Bar  &gt;&lt; 開発コンテナー : ...     Ln 1, Col 1 |
++----------------------------------------------------+
+  ↑        ↑                ↑                ↑
+ Activity  Sidebar          Editor +         Status
+ Bar       (file list)      Panel            Bar</code></pre>
+
+<table>
+<thead><tr><th>名称</th><th>位置</th><th>何をする所か</th></tr></thead>
+<tbody>
+<tr><td><strong>アクティビティバー</strong></td><td>左端の縦帯</td><td>エクスプローラー・検索・Git・拡張機能などのアイコン群</td></tr>
+<tr><td><strong>サイドバー</strong></td><td>アクティビティバーの右</td><td>選択したアイコンの内容を表示（ファイル一覧など）</td></tr>
+<tr><td><strong>エディタ</strong></td><td>中央</td><td>コードを書く・読むメイン領域。タブで複数開ける</td></tr>
+<tr><td><strong>パネル</strong></td><td>下部</td><td><strong>ターミナル</strong>・出力・問題リスト・デバッグコンソール</td></tr>
+<tr><td><strong>ステータスバー</strong></td><td>一番下の青い帯</td><td>Dev Container の状態（左下 <code>&gt;&lt;</code> マーク）、行番号、Git ブランチなど</td></tr>
+<tr><td><strong>コマンドパレット</strong></td><td>（開いた時だけ表示）</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> で開く。VS Code の全機能を検索・実行</td></tr>
+</tbody>
+</table>
+
+<h4>⚠️ ターミナルが 2 種類ある — 混同に注意</h4>
+
+<p>VS Code を使い始めると <strong>「ターミナル」</strong> が <strong>2 か所</strong> に出てきます。<strong>名前は同じでも、まったく別の場所で動いているもの</strong> なので混同しないように注意。</p>
+
+<table>
+<thead><tr><th></th><th>🪟🍎 <strong>OS のターミナル</strong></th><th>💻 <strong>VS Code 内のターミナル</strong></th></tr></thead>
+<tbody>
+<tr><td><strong>どこで開く</strong></td>
+    <td>Windows: スタートから「ターミナル（管理者）」<br>Mac: <kbd>⌘</kbd> + <kbd>Space</kbd> → <code>terminal</code></td>
+    <td>VS Code の下部パネル<br>（<kbd>Ctrl</kbd> + <kbd>`</kbd> または <kbd>Ctrl</kbd> + <kbd>;</kbd>）</td></tr>
+<tr><td><strong>どこで動いている</strong></td><td>あなたの PC 本体（Windows / macOS）</td><td>Dev Container 起動後は <strong>コンテナの中（Linux）</strong></td></tr>
+<tr><td><strong>使う場面</strong></td><td>WSL2 / Docker のインストール、PowerShell 系コマンド、Git の <code>clone</code></td><td>授業中の Python 実行、<code>make</code>、Linux コマンド練習</td></tr>
+<tr><td><code>docker -v</code></td><td>OK</td><td>Dev Container 内では普通使わない</td></tr>
+<tr><td><code>make</code></td><td>普通使わない</td><td>OK（教材同期はこちら）</td></tr>
+</tbody>
+</table>
+
+<blockquote>
+<p><strong>覚え方</strong>: 「<strong>Docker を入れる前 = OS のターミナル</strong>」「<strong>Dev Container に入った後 = VS Code 内のターミナル</strong>」。</p>
+<p>本ガイドでは Step 7 までが OS のターミナル、Step 10 以降が VS Code 内のターミナルの出番です。</p>
+</blockquote>
+
+<hr>
+
+<h2>Step 5: Git をインストールする</h2>
+
+<h3>🪟 Windows</h3>
+<ol>
+<li><a href="https://git-scm.com/">https://git-scm.com/</a> にアクセス</li>
+<li><strong>Download for Windows</strong> をクリックしてインストーラ（<code>.exe</code>）をダウンロード</li>
+<li>インストーラを実行。基本は <strong>「Next」連打</strong> で OK。次の 1 つだけ確認：
+  <ul><li><strong>「Git from the command line and also from 3rd-party software」</strong> を選ぶ（PowerShell から <code>git</code> コマンドが使えるように）</li></ul>
+</li>
+<li>完了後、PowerShell を一旦閉じて開き直し、確認：</li>
+</ol>
+
+<pre><code>git --version</code></pre>
+
+<p><code>git version 2.xx.x.windows.x</code> のように表示されれば OK。</p>
+
+<h3>🍎 macOS</h3>
+<p>ターミナルで Homebrew 経由でインストール：</p>
+
+<pre><code>brew install git
+git --version</code></pre>
+
+<blockquote>
+<p><strong>Homebrew が入っていない場合</strong>: <code>brew: command not found</code> と出ます。<a href="https://brew.sh/ja/">https://brew.sh/ja/</a> の手順でインストールしてから上記を実行。</p>
+</blockquote>
+
+<hr>
+
+<h2>Step 6: 教員リポジトリを clone する 🍎🪟</h2>
+
+<h3>Step 6.1: リポジトリの URL を確認</h3>
+<p>ブラウザで以下を開く：</p>
+<p><a href="https://github.com/wadakeiichi/programing1">https://github.com/wadakeiichi/programing1</a></p>
+
+<p>緑色の <strong><code>&lt;&gt; Code</code></strong> ボタンをクリック → <strong>HTTPS</strong> タブの URL（<code>https://github.com/wadakeiichi/programing1.git</code>）をコピー。</p>
+
+<h3>Step 6.2: Clone する</h3>
+
+<p>PowerShell（Windows）またはターミナル（Mac）で、まず作業フォルダを作って移動：</p>
+
+<pre><code># Mac の場合
+mkdir -p ~/Documents/programing2027
+cd ~/Documents/programing2027
+
+# Windows の場合（PowerShell）
+mkdir $env:USERPROFILE\Documents\programing2027 -ErrorAction SilentlyContinue
+cd $env:USERPROFILE\Documents\programing2027</code></pre>
+
+<blockquote class="warn">
+<p><strong>🪟 Windows 学生への注意</strong>: <strong>OneDrive 配下に置かないこと</strong>。OneDrive の同期と Dev Container がぶつかってトラブルになります。必ず <strong>ローカルの <code>Documents/</code></strong> 直下にしてください。</p>
+</blockquote>
+
+<p>clone 実行：</p>
+
+<pre><code>git clone https://github.com/wadakeiichi/programing1.git</code></pre>
+
+<p><code>programing1/</code> フォルダができて、中に <code>README.md</code>、<code>docs/</code>、<code>.devcontainer/</code> などが入っていれば成功です。</p>
+
+<pre><code>cd programing1
+ls   # （Windows でも PowerShell では ls が使える）</code></pre>
+
+<hr>
+
+<h1>Part B: Docker Desktop のインストール</h1>
+
+<h2>Step 7: Docker Desktop をインストールする</h2>
+
+<h3>🪟 Windows</h3>
+
+<blockquote class="warn">
+<p><strong>重要</strong>: <strong>Microsoft Store からのインストールは使わない</strong>でください。Microsoft Store 版は <code>C:\ProgramData\DockerDesktop</code> のパーミッション問題（<strong>付録 B-3</strong>）を非常に起こしやすく、本授業では非推奨です。</p>
+</blockquote>
+
+<h4>Step 7.1: WSL2 を先にセットアップ（重要！）</h4>
+
+<p>Docker Desktop より <strong>前</strong> に WSL2 を入れておくと、必要な Windows 機能（Virtual Machine Platform / Hypervisor Platform / WSL2 カーネル）がほぼ自動で揃い、トラブルを大幅に減らせます。</p>
+
+<p><strong>管理者 PowerShell</strong>（Step 2.1 の方法で開く）に以下をコピペし、<kbd>Enter ↵</kbd> で実行：</p>
+
+<pre><code>wsl --install --no-distribution
+wsl --update
+wsl --set-default-version 2</code></pre>
+
+<p>数分かかったら、続けて以下をコピペし <kbd>Enter ↵</kbd> で <strong>PC を再起動</strong> します。</p>
+
+<pre><code>shutdown /r /t 0</code></pre>
+
+<blockquote class="warn">
+<p>⚠️ <strong>再起動は必須！</strong><br>
+スリープ／サインアウト／VS Code の再起動 では不十分です。<strong>OS ごと再起動</strong> してください。再起動しないと Windows 機能の有効化が反映されず、後の Docker 起動で <code>Virtualization support not detected</code>（付録 B-4）が出ます。</p>
+</blockquote>
+
+<p>再起動後、もう一度 <strong>管理者 PowerShell</strong> を開き直して、以下をコピペ＆ <kbd>Enter ↵</kbd>：</p>
+
+<pre><code>wsl --version
+wsl --status</code></pre>
+
+<p><code>Default Version: 2</code> と表示されれば OK。</p>
+
+<h4>Step 7.2: Docker Desktop をインストール</h4>
+
+<ol>
+<li>ブラウザで <a href="https://www.docker.com/products/docker-desktop/">https://www.docker.com/products/docker-desktop/</a> を開く</li>
+<li><strong>Download for Windows</strong> をクリックして <code>Docker Desktop Installer.exe</code> をダウンロード
+  <ul><li>Step 1 で確認した CPU に合わせて x86_64 / ARM 版を選ぶ</li></ul>
+</li>
+<li>ダウンロードしたファイルを <strong>右クリック → 「管理者として実行」</strong> で起動
+  <ul><li><strong>⚠️ ダブルクリックではなく必ず右クリック → 管理者として実行</strong>。ダブルクリックでも一見動くが、後でパーミッション問題が出ます</li></ul>
+</li>
+<li>インストール画面で <strong>「Use WSL 2 instead of Hyper-V」にチェック</strong> が入っていることを確認</li>
+<li>完了後、サインアウト or 再起動を促されたら従う</li>
+</ol>
+
+<h3>🍎 macOS</h3>
+<ol>
+<li><a href="https://www.docker.com/products/docker-desktop/">https://www.docker.com/products/docker-desktop/</a> を開く</li>
+<li><strong>Download for Mac</strong> をクリック
+  <ul><li>Step 1 の結果に合わせて <strong>Apple Silicon</strong> or <strong>Intel chip</strong> を選ぶ</li></ul>
+</li>
+<li>ダウンロードした <code>.dmg</code> を開いて Docker アプリを Applications にドラッグ</li>
+<li>Docker を起動。最初に admin パスワードを求められたら入力</li>
+</ol>
+
+<hr>
+
+<h2>Step 8: Docker Desktop を起動・自動起動の設定</h2>
+
+<h3>Step 8.1: 起動確認</h3>
+
+<p>Docker Desktop を起動すると <strong>「Welcome to Docker」</strong> 画面が出ます。<strong>Skip</strong> で OK（サインインは不要）。</p>
+
+<p>メニューバー右上（🍎）または通知領域（🪟）に <strong>クジラのアイコン 🐳</strong> が表示され、「Docker Desktop is running」になるまで 1〜2 分待ちます。</p>
+
+<p>PowerShell（Win） / ターミナル（Mac）で：</p>
+
+<pre><code>docker -v
+docker ps
+docker run --rm hello-world</code></pre>
+
+<p>最後のコマンドで <code>Hello from Docker!</code> が出れば成功です。</p>
+
+<h3>Step 8.2: 自動起動の設定</h3>
+<p>ログイン時に Docker Desktop が自動で起動するようにしておくと便利です。</p>
+<ul>
+<li><strong>🍎 macOS</strong>: システム設定 → 一般 → ログイン項目と機能拡張 → ログイン時に開く に Docker を追加（<code>+</code> ボタン）</li>
+<li><strong>🪟 Windows</strong>: 設定 → アプリ → スタートアップ → <strong>Docker Desktop Launcher</strong> をオン</li>
+</ul>
+
+<hr>
+
+<h1>Part C: Dev Container を起動</h1>
+
+<h2>Step 9: VS Code でフォルダを開く</h2>
+<ol>
+<li>VS Code を <strong>再起動</strong>（Docker Desktop が起動してから）</li>
+<li>ファイル → <strong>新しいウィンドウ</strong></li>
+<li>ファイル → <strong>フォルダーを開く</strong></li>
+<li><strong>clone した <code>programing1</code> フォルダ</strong> を選択
+  <ul>
+    <li>🪟 Windows: <code>Documents/programing2027/programing1</code>（<strong>OneDrive 配下を選ばないこと</strong>）</li>
+    <li>🍎 macOS: <code>~/Documents/programing2027/programing1</code></li>
+    <li><strong><code>programing1</code> の上の階層を選ばないこと</strong></li>
+  </ul>
+</li>
+<li>「このファイルの作成者を信頼しますか？」と出たら <strong>「はい、作成者を信頼します」</strong></li>
+</ol>
+
+<h2>Step 10: Dev Container で再度開く</h2>
+<ol>
+<li>画面左下の <strong><code>&gt;&lt;</code> マーク</strong>（青または茶色）をクリック
+  <ul><li>見えないときは VS Code ウィンドウを大きくするか、<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> (Win) / <kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> (Mac) でコマンドパレットを開き、<code>Dev Containers: Reopen in Container</code> と入力</li></ul>
+</li>
+<li>メニューから <strong>「コンテナーで再度開く」</strong> または <strong>「Reopen in Container」</strong> を選ぶ
+  <ul><li><strong>「コンテナー構成ファイルの追加」は選ばない</strong>。これは新規作成用で、教員提供の設定が壊れます</li></ul>
+</li>
+</ol>
+
+<p>初回は数分（インストール待ち）かかります。完了すると左下の表示が <strong>「開発コンテナー: Python3@desktop-linux」</strong> のようになります。</p>
+
+<blockquote class="warn">
+<p><strong>重要</strong>: 初回ビルドが完了したら、<strong>一度 VS Code ウィンドウを閉じて、もう一度 <code>programing1</code> を VS Code で開き直してください</strong>。これで dev container 内に正しく入った状態が保存されます。</p>
+</blockquote>
+
+<h2>Step 10.1: 動作確認</h2>
+
+<p>VS Code 内で <strong><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>@</kbd></strong> または <kbd>Ctrl</kbd> + <kbd>;</kbd> でターミナルを開き：</p>
+
+<pre><code>ls
+make</code></pre>
+
+<ul>
+<li><code>ls</code> で <code>README.md</code>, <code>docs/</code>, <code>.devcontainer/</code> などが見える</li>
+<li><code>make</code> を打つと <code>update_from_teacher.sh</code> が走り、教員リポジトリから最新の教材が取得される</li>
+</ul>
+
+<p>これで初期設定は完了です。</p>
+
+<hr>
+
+<h1>Part D: 毎回の授業での操作</h1>
+
+<h2>教材を最新に更新する</h2>
+
+<p>VS Code 内のターミナルで毎回最初に：</p>
+
+<pre><code>make</code></pre>
+
+<p>これだけで教員配布のファイル（<code>docs/</code>, <code>.devcontainer/</code> など）が最新になります。学生が自分で作った <code>.py</code> ファイル等は削除されません。</p>
+
+<p>詳しい挙動・注意は <code>docs/week3a.md</code> 末尾を参照。</p>
+
+<h2>VS Code 必須ショートカット</h2>
+
+<table>
+<thead><tr><th>動作</th><th>Windows</th><th>macOS</th></tr></thead>
+<tbody>
+<tr><td><strong>コマンドパレット</strong>（全機能の入口）</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd></td><td><kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd></td></tr>
+<tr><td>ターミナル開閉</td><td><kbd>Ctrl</kbd> + <kbd>`</kbd>（JP: <kbd>Ctrl</kbd> + <kbd>@</kbd>）</td><td><kbd>⌃</kbd> + <kbd>`</kbd></td></tr>
+<tr><td>セル実行（<code># %%</code>）</td><td><kbd>Shift</kbd> + <kbd>Enter</kbd></td><td><kbd>Shift</kbd> + <kbd>Enter</kbd></td></tr>
+<tr><td>コメントの切替</td><td><kbd>Ctrl</kbd> + <kbd>/</kbd></td><td><kbd>⌘</kbd> + <kbd>/</kbd></td></tr>
+<tr><td>保存</td><td><kbd>Ctrl</kbd> + <kbd>S</kbd></td><td><kbd>⌘</kbd> + <kbd>S</kbd></td></tr>
+<tr><td>ファイルを素早く開く</td><td><kbd>Ctrl</kbd> + <kbd>P</kbd></td><td><kbd>⌘</kbd> + <kbd>P</kbd></td></tr>
+</tbody>
+</table>
+
+<blockquote>
+<p><strong>コマンドパレット最重要</strong>: <code>&gt;&lt;</code> マークがタスクバーに隠れて見えない時も、<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> → 「Dev Containers: Rebuild Container」のように入力すれば全操作が呼べます。</p>
+</blockquote>
+
+<hr>
+
+<h1>付録 A: 共通の便利情報</h1>
+
+<h2>A-1. PowerShell でのフォルダ名の変更（Windows）</h2>
+
+<pre><code>Rename-Item -Path programing1 -NewName programing1_old</code></pre>
+
+<h2>A-2. Mac での Homebrew インストール</h2>
+<p>ターミナルで：</p>
+
+<pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre>
+
+<p>詳細は <a href="https://brew.sh/ja/">https://brew.sh/ja/</a> 参照。</p>
+
+<hr>
+
+<h1>付録 B: Windows トラブル FAQ</h1>
+
+<blockquote>
+<p>今年度の授業で実際に複数の学生に発生したトラブルの予防・解決策です。</p>
+</blockquote>
+
+<h2>B-1. BIOS で仮想化を有効化する</h2>
+
+<p>Pre-flight チェック (Step 3) で <code>VirtualizationFirmwareEnabled</code> が <code>False</code> だった場合：</p>
+
+<ol>
+<li>Windows の <strong>設定</strong> → <strong>システム</strong> → <strong>回復</strong> → <strong>PC の起動をカスタマイズする</strong> → <strong>今すぐ再起動</strong></li>
+<li>再起動後の青い画面で <strong>トラブルシューティング</strong> → <strong>詳細オプション</strong> → <strong>UEFI ファームウェアの設定</strong></li>
+<li>BIOS 画面で次の項目を探して <strong>Enabled</strong> に変更：
+  <ul>
+    <li><strong>Intel CPU</strong>: <code>Intel Virtualization Technology</code> / <code>Intel VT-x</code> / <code>VT-d</code></li>
+    <li><strong>AMD CPU</strong>: <code>SVM Mode</code> / <code>AMD-V</code></li>
+  </ul>
+</li>
+<li><strong>設定を保存して PC を再起動</strong>（多くの場合 F10 → Yes）</li>
+<li>Pre-flight チェック (Step 3) をもう一度実行して <code>True</code> になっていることを確認</li>
+</ol>
+
+<blockquote class="warn">
+<p>⚠️ <strong>再起動を忘れない！</strong> BIOS で「Save &amp; Exit」を選んだだけで Windows が起動しないとき、もう一度同じ手順で BIOS に入って設定が反映されているか確認してください。</p>
+</blockquote>
+
+<h2>B-2. 古い Docker の残骸を削除する</h2>
+
+<p>Pre-flight チェックで「存在」が出た場合、または Docker Desktop インストール時に下記 B-3 のエラーが出る場合の対処です。</p>
+
+<p><strong>管理者 PowerShell</strong>（Step 2.1 の方法で開く）に以下を <strong>すべて選択 → コピー → ターミナルに貼り付け → <kbd>Enter ↵</kbd></strong> で実行：</p>
+
+<pre><code>$path = "C:\ProgramData\DockerDesktop"
+
+$admins = (New-Object System.Security.Principal.SecurityIdentifier `
+    "S-1-5-32-544").Translate([System.Security.Principal.NTAccount]).Value
+$system = (New-Object System.Security.Principal.SecurityIdentifier `
+    "S-1-5-18").Translate([System.Security.Principal.NTAccount]).Value
+
+Stop-Service -Name com.docker.service -ErrorAction SilentlyContinue
+Stop-Process -Name "Docker Desktop" -Force -ErrorAction SilentlyContinue
+
+if (Test-Path $path) {
+    takeown /F $path /A /R /D Y
+    icacls $path /grant "${admins}:(OI)(CI)(F)" /T
+    Remove-Item $path -Recurse -Force
+}
+
+New-Item -ItemType Directory -Path $path -Force
+icacls $path /setowner $admins
+icacls $path /grant "${admins}:(OI)(CI)(F)" "${system}:(OI)(CI)(F)" /inheritance:e
+
+(Get-Acl $path).Owner   # BUILTIN\Administrators と表示されれば OK</code></pre>
+
+<blockquote class="warn">
+<p>⚠️ <strong>再起動が必要！</strong> その後 PC を再起動（<code>shutdown /r /t 0</code> または通常の再起動）して、Step 7.2 から再開してください。</p>
+</blockquote>
+
+<h2>B-3. <code>For security reasons C:\ProgramData\DockerDesktop must be owned by an elevated account</code></h2>
+
+<p><strong>原因</strong>: 過去に Microsoft Store 版や別ユーザーで Docker Desktop インストールに失敗し、<code>C:\ProgramData\DockerDesktop</code> が通常ユーザー所有のまま残っている。</p>
+
+<p><strong>対処</strong>: 上の B-2 を実行 → PC 再起動 → <strong>公式サイト</strong> から <code>Docker Desktop Installer.exe</code> をダウンロードし、<strong>右クリック → 「管理者として実行」</strong> でインストールし直す。</p>
+
+<h2>B-4. <code>Virtualization support not detected</code>（タスクマネージャーでは仮想化「有効」なのに）</h2>
+
+<p><strong>原因</strong>: BIOS の仮想化機能は ON だが、Windows 側のスイッチ（Virtual Machine Platform / Hypervisor Platform / hypervisor 起動設定）のいずれかが OFF。</p>
+
+<p><strong>対処</strong>: <strong>管理者 PowerShell</strong>（Step 2.1 の方法で開く）に以下をコピペし、<kbd>Enter ↵</kbd> で実行：</p>
+
+<pre><code>wsl --install --no-distribution
+wsl --update
+wsl --set-default-version 2
+
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+dism.exe /online /enable-feature /featurename:HypervisorPlatform /all /norestart
+
+bcdedit /set hypervisorlaunchtype auto</code></pre>
+
+<blockquote class="warn">
+<p>⚠️ <strong>再起動が必須！</strong> スリープ／サインアウトでは不十分。続けて以下を実行して <strong>OS ごと再起動</strong> してください。</p>
+</blockquote>
+
+<pre><code>shutdown /r /t 0</code></pre>
+
+<p>再起動後、もう一度 <strong>管理者 PowerShell</strong> を開き、以下をコピペ＆ <kbd>Enter ↵</kbd> で確認：</p>
+
+<pre><code>wsl --status
+bcdedit /enum | findstr /i hypervisor</code></pre>
+
+<p><code>hypervisorlaunchtype: Auto</code> が表示されれば OK。Docker Desktop を起動し直す。</p>
+
+<p>それでも同じエラーが出る場合は、Docker Desktop 用の WSL 仮想ディスクが壊れている可能性があるので、<strong>最終手段</strong>として、<strong>管理者 PowerShell</strong> で以下をコピペ＆ <kbd>Enter ↵</kbd>：</p>
+
+<pre><code>wsl --shutdown
+wsl --unregister docker-desktop
+wsl --unregister docker-desktop-data</code></pre>
+
+<blockquote>
+<p><strong>注意</strong>: Docker 内に作ったコンテナ／イメージが消えます。Programing-I 初期段階なら問題なし。</p>
+</blockquote>
+
+<h2>B-5. Docker Desktop を完全リセットする（最終手段）</h2>
+
+<p>何度試しても動かないとき。<strong>管理者 PowerShell</strong>（Step 2.1 の方法で開く）に以下をコピペし、<kbd>Enter ↵</kbd> で実行：</p>
+
+<pre><code># Docker Desktop 終了
+Stop-Process -Name "Docker Desktop" -Force -ErrorAction SilentlyContinue
+Stop-Service -Name com.docker.service -ErrorAction SilentlyContinue
+
+# 全削除（既存の Docker データも消えます）
+Remove-Item "C:\ProgramData\Docker"        -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item "C:\ProgramData\DockerDesktop" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item "C:\Program Files\Docker"      -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item "$env:LOCALAPPDATA\Docker"     -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item "$env:APPDATA\Docker"          -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item "$env:APPDATA\Docker Desktop"  -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item "$env:USERPROFILE\.docker"     -Recurse -Force -ErrorAction SilentlyContinue</code></pre>
+
+<blockquote class="warn">
+<p>⚠️ <strong>再起動が必要！</strong> その後 PC を再起動（<code>shutdown /r /t 0</code>）してから Step 7.1（WSL2）から順にやり直してください。</p>
+</blockquote>
+
+<hr>
+
+<h1>付録 C: macOS トラブル FAQ</h1>
+
+<h2>C-1. <code>Cannot connect to the Docker daemon</code></h2>
+<p><strong>原因</strong>: Docker Desktop アプリ本体が起動していない／起動中。</p>
+<p><strong>対処</strong>: Launchpad から Docker を起動。メニューバー右上のクジラのアイコンが「running」になるまで 1 分ほど待ってから再試行。</p>
+
+<h2>C-2. Apple Silicon Mac (M1/M2/M3/M4) で「Rosetta が必要」</h2>
+<p><strong>原因</strong>: Apple Silicon Mac で Intel バイナリを必要とするコンテナを動かそうとした。</p>
+<p><strong>対処</strong>: ダイアログに従って Rosetta をインストール。または Docker Desktop 設定 → General → <strong>「Use Rosetta for x86_64/amd64 emulation」</strong> を有効化。</p>
+
+<h2>C-3. ディスク容量不足で Docker が動かない</h2>
+<p><strong>原因</strong>: Docker Desktop はデフォルトで数十 GB を使う。</p>
+<p><strong>対処</strong>: 不要なイメージを削除。VS Code 内ターミナルで：</p>
+
+<pre><code>docker system prune -a</code></pre>
+
+<p>それでも足りない場合は Docker Desktop 設定 → Resources → Disk image size を確認。</p>
+
+<hr>
+
+<h1>つまずいたら</h1>
+
+<ul>
+<li>まず Pre-flight チェック（Step 3）を再実行して、期待値と違う項目を特定</li>
+<li><code>wsl --status</code> の出力と Docker のエラーメッセージ全文を、<strong>TA／教員に Slack で共有</strong></li>
+<li>自分で何時間も粘らず、<strong>最初の授業の冒頭で質問して OK</strong></li>
+</ul>
+
+<hr>
+
+<blockquote>
+<p>このガイドは Markdown で管理されています。改善提案は教員リポジトリの Issue で受け付けています。</p>
+</blockquote>
+
+</body>
+</html>
