@@ -11,7 +11,8 @@
         "ms-vscode-remote.remote-containers",
         "MS-CEINTL.vscode-language-pack-ja",
         "vscodevim.vim",
-        "ms-toolsai.jupyter"
+        "ms-toolsai.jupyter",
+        "yzhang.markdown-all-in-one"
       ],
       "settings": {
         "python.defaultInterpreterPath": "/usr/local/bin/python"
