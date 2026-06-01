@@ -772,13 +772,65 @@ icacls $path /grant "${admins}:(OI)(CI)(F)" "${system}:(OI)(CI)(F)" /inheritance
 
 <h2>B-3. <code>For security reasons C:\ProgramData\DockerDesktop must be owned by an elevated account</code></h2>
 
-<p><strong>原因</strong>: 過去に Microsoft Store 版や別ユーザーで Docker Desktop インストールに失敗し、<code>C:\ProgramData\DockerDesktop</code> が通常ユーザー所有のまま残っている。</p>
+<p>Docker Desktop のインストール時に <code>C:\ProgramData\DockerDesktop</code> フォルダの所有者またはアクセス権が適切でないため、インストーラが安全上の理由で処理を中断している状態です。<strong>典型的には、以前のインストール失敗や手動削除の途中で、フォルダが通常ユーザー所有のまま残ったり権限設定が壊れたりした場合に起こります</strong>。</p>
 
-<p><strong>対処</strong>: 上の B-2 を実行 → PC 再起動 → <strong>公式サイト</strong> から <code>Docker Desktop Installer.exe</code> をダウンロードし、<strong>右クリック → 「管理者として実行」</strong> でインストールし直す。</p>
+<p><strong>主な原因</strong>:</p>
+
+<ul>
+<li><code>C:\ProgramData\DockerDesktop</code> が以前の Docker の残骸として残っている</li>
+<li>そのフォルダの所有者が管理者グループではなく通常ユーザーになっている</li>
+<li>アクセス権が壊れていて、インストーラが安全に利用できないと判断している</li>
+<li>Microsoft Store 経由のインストールで、既存フォルダの権限問題を引き継いでいる</li>
+</ul>
+
+<p><strong>対処手順</strong>:</p>
+
+<ol>
+<li>Docker Desktop のインストール画面と Microsoft Store を閉じる</li>
+<li><strong>B-2</strong> の PowerShell スクリプトを <strong>管理者 PowerShell</strong> で実行（フォルダ所有者を Administrators に戻し、権限を再付与）</li>
+<li>PC を <strong>再起動</strong></li>
+<li><strong>公式サイト</strong>（<a href="https://www.docker.com/products/docker-desktop/">https://www.docker.com/products/docker-desktop/</a>）から <code>Docker Desktop Installer.exe</code> をダウンロードし、<strong>右クリック → 「管理者として実行」</strong> で再インストール</li>
+</ol>
+
+<p><strong>確認方法</strong>: 次のコマンドで所有者を確認できます。</p>
+
+<pre><code>(Get-Acl "C:\ProgramData\DockerDesktop").Owner</code></pre>
+
+<p><code>BUILTIN\Administrators</code> もしくはそれに相当する管理者グループになっていれば、状態は正常です。</p>
+
+<blockquote>
+<p><strong>補足</strong>:</p>
+<ul>
+<li>画面上の <code>¥</code> は、日本語環境での <code>\</code> 表示です（同じ文字を指します）</li>
+<li>インストール時は管理者権限が必要です</li>
+<li>再インストール前に Windows の再起動を挟むと、ロックされたファイルの問題を避けやすくなります</li>
+</ul>
+</blockquote>
 
 <h2>B-4. <code>Virtualization support not detected</code>（タスクマネージャーでは仮想化「有効」なのに）</h2>
 
-<p><strong>原因</strong>: BIOS の仮想化機能は ON だが、Windows 側のスイッチ（Virtual Machine Platform / Hypervisor Platform / hypervisor 起動設定）のいずれかが OFF。</p>
+<p><strong>症状</strong>: Docker Desktop 起動時に <code>Virtualization support not detected</code> と表示されて起動できない。BIOS / UEFI 上では仮想化は有効になっているのに、Docker からは仮想化を使えない状態。</p>
+
+<p><strong>問題の本体</strong>: BIOS 側ではなく、<strong>Windows 側の WSL2 / Virtual Machine Platform / Hypervisor の設定</strong>である可能性が高い。</p>
+
+<p><strong>考えられる主な原因</strong>:</p>
+
+<ul>
+<li><strong>WSL2</strong> が未導入、または壊れている</li>
+<li><strong>Virtual Machine Platform</strong> が無効</li>
+<li><strong>Hypervisor</strong> の起動設定が無効になっている</li>
+<li>Docker Desktop 用の内部 WSL 環境（<code>docker-desktop</code> など）が破損している</li>
+</ul>
+
+<p><strong>対処の優先順位</strong>:</p>
+
+<ol>
+<li>WSL2 を導入・更新する</li>
+<li>Virtual Machine Platform を有効にする</li>
+<li>Hypervisor の起動を <code>auto</code> にする</li>
+<li><strong>OS ごと再起動</strong>する</li>
+<li>それでもだめなら <code>docker-desktop</code> を再生成する</li>
+</ol>
 
 <p><strong>対処</strong>: <strong>管理者 PowerShell</strong>（Step 2.1 の方法で開く）に以下をコピペし、<kbd>Enter ↵</kbd> で実行：</p>
 
@@ -814,6 +866,22 @@ wsl --unregister docker-desktop-data</code></pre>
 <blockquote>
 <p><strong>注意</strong>: Docker 内に作ったコンテナ／イメージが消えます。Programing-I 初期段階なら問題なし。</p>
 </blockquote>
+
+<h3>B-4 補足: 原因切り分け用の確認コマンド</h3>
+
+<p>「どこで詰まっているのか」をさらに切り分けたい場合、<strong>管理者 PowerShell</strong> で以下を実行して結果を見比べる：</p>
+
+<pre><code>systeminfo
+wsl --status
+wsl --version
+wsl -l -v
+bcdedit /enum | findstr /i hypervisor</code></pre>
+
+<p>特に重要なのは、最後のコマンドの結果に以下が含まれていること：</p>
+
+<pre><code>hypervisorlaunchtype    Auto</code></pre>
+
+<p>ここが <code>Off</code> になっていると、<strong>BIOS で仮想化が有効でも Docker Desktop からは仮想化を使えない状態</strong>になります。<code>Off</code> の場合は上の <code>bcdedit /set hypervisorlaunchtype auto</code> を再度実行 → 再起動。</p>
 
 <h2>B-5. Docker Desktop を完全リセットする（最終手段）</h2>
 
