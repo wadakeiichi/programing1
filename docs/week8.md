@@ -95,7 +95,7 @@ print(np.loadtxt("test.csv"))
 | `np.savetxt` / `np.loadtxt` | NumPy 配列をテキスト（CSV）で読み書き | 数値の表をファイルに残す・読む |
 | `np.save` / `np.load` | NumPy 配列をバイナリで読み書き | 大きな配列を速く・正確に保存 |
 
-> なお、表形式データを扱うライブラリ **pandas** と、複数ファイルをまとめて処理する **glob** は、次回（Week 9）以降で扱う。
+> なお、表形式データを扱うライブラリ **pandas** は次回（Week 9）で扱う。
 
 ---
 
