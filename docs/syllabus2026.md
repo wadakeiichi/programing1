@@ -30,8 +30,8 @@
 | 5 | **NumPy 配列とベクトル演算** | 配列と数学のベクトル・行列の関係・配列の作成（array, linspace, zeros, arange）・ブロードキャスト演算・集計関数（max, mean, sum）・for ループとの速度比較 | `week5.md`／練習問題 2 |
 | 6 | **Matplotlib による 2D 可視化** | 折れ線グラフ（plot）・軸ラベル・凡例・グリッド・画像保存（savefig）・複数パネル（subplots）・ヒストグラム | `week6.md`／練習問題 3 |
 | 7 | **制御構造と関数定義** | if／elif／else・for＋range・while（収束判定）・def による関数定義・デフォルト引数・docstring・自作モジュールの import | `week7.md`／練習問題 4 |
-| 8 | **ファイル入出力とデータ解析** | CSV の読み書き（np.loadtxt・np.savetxt）・pandas の基本（pd.read_csv・列アクセス・条件絞り込み）・バイナリ保存（np.save／np.load）・辞書（dict）・glob によるバッチ処理と可視化 | `week8.md`／練習問題 5 |
-| 9 | **NumPy 2D 配列と可視化** | 2D 配列の作成とスライシング・meshgrid の考え方・contourf（等高線）・imshow（ピクセルマップ）・colorbar | `week9.md`／練習問題 6 |
+| 8 | **ファイル入出力とデータ解析** | 辞書（dict）・CSV の読み書き（np.savetxt／np.loadtxt）・バイナリ保存（np.save／np.load） | `week8.md`／練習問題 5 |
+| 9 | **データ解析と 2D 配列の可視化** | pandas の基本（pd.read_csv・列アクセス・条件絞り込み）・glob によるバッチ処理・2D 配列の作成とスライシング・meshgrid の考え方・contourf（等高線）・imshow（ピクセルマップ）・colorbar | `week9.md`／練習問題 6 |
 
 ---
 
@@ -67,8 +67,8 @@
 | `week5.md` | Week 5 | NumPy 配列の概念と演算 |
 | `week6.md` | Week 6 | Matplotlib による 2D グラフ描画 |
 | `week7.md` | Week 7 | if／for／while・関数定義・自作モジュール |
-| `week8.md` | Week 8 | 辞書・ファイル入出力・バッチ処理 |
-| `week9.md` | Week 9 | 2D 配列・meshgrid・contourf・imshow |
+| `week8.md` | Week 8 | 辞書・ファイル入出力（CSV／バイナリ） |
+| `week9.md` | Week 9 | pandas・glob・2D 配列・meshgrid・contourf・imshow |
 | `week11.md` | Week 11 | 常微分方程式の数値解法（solve_ivp） |
 | `week12.md` | Week 12 | フィッティング（curve_fit）・argparse・bash |
 
@@ -106,8 +106,8 @@
 | 5 | np.array, np.linspace, np.zeros, np.arange, ブロードキャスト, np.max, np.mean |
 | 6 | plt.plot, plt.xlabel, plt.legend, plt.savefig, plt.subplots, plt.hist |
 | 7 | if/elif/else, while, range, def, return, デフォルト引数, 自作モジュール |
-| 8 | dict `{}`, np.savetxt, np.loadtxt, np.save, np.load, glob, csv |
-| 9 | 2D 配列, np.meshgrid, plt.contourf, plt.contour, plt.imshow, plt.colorbar |
+| 8 | dict `{}`, np.savetxt, np.loadtxt, np.save, np.load, csv |
+| 9 | pandas (pd.read_csv), glob, 2D 配列, np.meshgrid, plt.contourf, plt.contour, plt.imshow, plt.colorbar |
 | 10 | GitHub Education Pack, GitHub Copilot インライン補完, Copilot Chat |
 | 11 | scipy.integrate.solve_ivp, ODE の連立化 |
 | 12 | scipy.optimize.curve_fit, argparse, bash の for ループ |

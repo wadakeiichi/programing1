@@ -94,9 +94,8 @@ print(np.loadtxt("test.csv"))
 | 辞書 `dict` | 「名前」と「値」を対応づけて持つ | パラメータや観測値をまとめて管理 |
 | `np.savetxt` / `np.loadtxt` | NumPy 配列をテキスト（CSV）で読み書き | 数値の表をファイルに残す・読む |
 | `np.save` / `np.load` | NumPy 配列をバイナリで読み書き | 大きな配列を速く・正確に保存 |
-| `glob` | 条件に合うファイル名を一覧で取得 | 大量のファイルをまとめて処理 |
 
-さらに、表形式データを扱うライブラリ **pandas** の入り口も少しだけ触れる。
+> なお、表形式データを扱うライブラリ **pandas** と、複数ファイルをまとめて処理する **glob** は、次回（Week 9）以降で扱う。
 
 ---
 
@@ -208,77 +207,6 @@ print(np.allclose(a, b))  # → True（完全に一致）
 
 ---
 
-#### pandas の基本 ― 表データを扱うライブラリ
-
-**pandas** は「行と列を持つ表（テーブル）」を扱うためのライブラリで、観測データや実験データの解析で広く使われる。表全体を **DataFrame（データフレーム）** というオブジェクトで持つ。慣習として `import pandas as pd` と書く。
-
-```python
-import pandas as pd
-
-# CSV ファイルを読み込む（見出し行は自動で認識される）
-df = pd.read_csv("throw.csv")
-print(df)            # 表全体を表示
-print(df.columns)    # 列名の一覧
-```
-
-列は **列名** で取り出せる（辞書に似た書き方）。
-
-```python
-print(df["t"])       # t 列だけ取り出す
-print(df["y"].max()) # y 列の最大値
-print(df["y"].mean())# y 列の平均
-```
-
-**条件で行を絞り込む** こともできる（データ解析でよく使う）。
-
-```python
-# y が 10 より大きい行だけ取り出す
-high = df[df["y"] > 10]
-print(high)
-```
-
-pandas の列や DataFrame は、`.values` または `np.array(...)` で NumPy 配列に変換でき、これまで学んだ NumPy / Matplotlib の道具とそのままつなげられる。
-
-```python
-import numpy as np
-t = df["t"].values    # NumPy 配列に変換
-y = np.array(df["y"])
-```
-
-> **ポイント**: `np.loadtxt` が「数値だけの表」向きなのに対し、pandas は **文字列と数値が混ざった表**・**欠損値のある表**・**見出し付きの表** を柔軟に扱える。本格的なデータ解析では pandas が主役になるが、今週はまず「CSV を読んで、列を取り出して、条件で絞る」という基本だけ押さえる。
-
----
-
-#### glob ― 条件に合うファイルをまとめて処理（バッチ処理）
-
-実験やシミュレーションでは、`run01.csv`, `run02.csv`, … のように **同じ形式のファイルが何十個もできる** ことがある。これを 1 つずつ手で開くのは大変なので、**`glob`** を使ってファイル名を一括取得し、ループでまとめて処理する。これを **バッチ処理** という。
-
-```python
-import glob
-
-# data フォルダの中の、.csv で終わるファイルをすべて取得
-files = glob.glob("data/*.csv")
-files.sort()          # 名前順に並べておく（順番を安定させる）
-print(files)          # → ['data/run01.csv', 'data/run02.csv', ...]
-```
-
-- **`*`** は「任意の文字列」を表すワイルドカード。`data/*.csv` は「data フォルダ内の、拡張子 csv の全ファイル」の意味。
-- 返ってくる順序は環境によってばらつくので、**`.sort()` で並べ替える** 習慣をつけるとよい。
-
-取得したファイル名のリストを `for` で回せば、全ファイルをまとめて処理できる。
-
-```python
-import numpy as np
-
-for f in files:
-    data = np.loadtxt(f, delimiter=",", skiprows=1)
-    print(f"{f}: 行数 {len(data)}, y の最大 {data[:,1].max():.2f}")
-```
-
-> **ポイント**: 「ファイル名を `glob` で集める → `for` で 1 つずつ読み込む → 結果をまとめる」が、バッチ処理の基本形。手作業を自動化できるので、データが増えても同じコードで処理できる。
-
----
-
 ### 例 1 ― 計算結果を CSV に保存して読み戻し、グラフにする
 
 鉛直投げ上げの「時刻 t と高さ y」を計算して CSV に保存し、別のセルで読み戻して Matplotlib（Week 6）でグラフにする。**「計算 → 保存 → 読み込み → 可視化」** という解析の一連の流れを体験する。
@@ -314,50 +242,6 @@ plt.show()
 
 ---
 
-### 例 2 ― glob で複数ファイルをまとめて解析する（バッチ処理）
-
-まず実験データに見立てた CSV を 3 つ自動生成し、その後 `glob` で集めてまとめて読み込み、各ファイルの統計量を表にする。
-
-```python
-# week8_ex2.py
-import numpy as np
-import glob
-import os
-
-# --- 練習用のデータファイルを 3 つ作る（本来は観測装置が出力するもの）---
-os.makedirs("runs", exist_ok=True)   # runs フォルダを作る（あってもエラーにしない）
-rng = np.random.default_rng(0)       # 乱数（再現性のため種を固定）
-for i in range(1, 4):
-    t = np.linspace(0, 1, 20)
-    signal = np.sin(2 * np.pi * i * t) + 0.1 * rng.standard_normal(20)
-    np.savetxt(f"runs/run{i:02d}.csv", np.column_stack([t, signal]),
-               delimiter=",", header="t,signal", comments="")
-
-# --- glob で集めてまとめて解析する ---
-files = glob.glob("runs/*.csv")
-files.sort()
-
-results = []   # 各ファイルの結果を辞書で貯めていく
-for f in files:
-    data = np.loadtxt(f, delimiter=",", skiprows=1)
-    sig = data[:, 1]
-    results.append({
-        "file": f,
-        "max": sig.max(),
-        "min": sig.min(),
-        "mean": sig.mean(),
-    })
-
-# --- 結果の表を表示 ---
-print(f"{'file':14s} {'max':>7s} {'min':>7s} {'mean':>7s}")
-for r in results:
-    print(f"{r['file']:14s} {r['max']:7.3f} {r['min']:7.3f} {r['mean']:7.3f}")
-```
-
-**実行結果の確認ポイント**: `runs/` フォルダに `run01.csv`〜`run03.csv` ができ、3 ファイル分の max/min/mean が表として表示されれば成功。`glob` で集めたファイルを `for` で回し、結果を **辞書のリスト** に貯めている点に注目する。
-
----
-
 ### 練習問題 5
 
 以下の練習問題を `programing1/week8/` に `week8_practice5.py` として保存せよ。各問題は `# %%` で区切ること。データファイルもこのフォルダの中に作る・読むようにすること。
@@ -365,5 +249,3 @@ for r in results:
 1. **辞書**: 太陽系の天体を辞書のリストで定義せよ。各辞書は `name`（名前）、`mass`（質量 [kg]）、`radius`（半径 [m]）の 3 つのキーを持つこと（地球・月・火星の 3 つでよい）。`for` で全天体を回し、各天体の **平均密度** ρ = mass / (4/3 · π · radius³) [kg/m³] を計算して `「名前: 密度 ... kg/m³」` の形で表示せよ。
 
 2. **CSV の保存と読み込み**: 角度 θ = 0〜90 度（10 点）に対する斜方投射の飛距離 R = v₀² sin(2θ) / g（v₀ = 20 m/s, g = 9.81）を計算し、θ と R の 2 列を `range.csv` に `np.savetxt` で保存せよ（header 付き）。続けて別セルで `np.loadtxt` で読み戻し、`np.loadtxt` した R の **最大値とそのときの角度** を求めて表示せよ（理論上は 45 度で最大になる。10 点では 45 度ちょうどが含まれないので最寄りの角度になることを確認し、なぜそうなるか考えよ）。
-
-3. **バッチ処理**: 例 2 を参考に、`runs/` フォルダに練習用 CSV を 5 つ自動生成せよ（中身は各自で決めてよい）。その後 `glob` で 5 ファイルを集め、各ファイルの平均値を計算し、**ファイル名と平均値の対応** を辞書にまとめて表示せよ。さらに、平均値が最大だったファイル名を求めて表示すること。
