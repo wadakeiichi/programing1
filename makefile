@@ -1,4 +1,4 @@
-.PHONY: sync update update-devcontainer
+.PHONY: sync update update-devcontainer pdf
 
 # `make` と打つだけで実行されるデフォルトターゲット
 .DEFAULT_GOAL := sync
@@ -18,3 +18,10 @@ update: sync
 # `.devcontainer` だけを更新したい場合（互換用）
 update-devcontainer:
 	bash .devcontainer/update_devcontainer.sh
+
+# 教材を配布用 PDF に変換する（Pandoc + XeLaTeX。教員用、要 pandoc/xelatex）
+#   make pdf              … docs/ の全 week*.md と syllabus を PDF 化
+#   make pdf FILE=week8   … docs/week8.md だけ PDF 化
+# 生成物は docs/*.pdf（.gitignore 済みなので学生には配布されない）
+pdf:
+	bash tools/build_pdf.sh $(FILE)

@@ -1,0 +1,51 @@
+% ===== プログラミングI 教材 PDF 用プリアンブル（XeLaTeX 専用） =====
+
+% --- 日本語フォント（fontspec + XeTeX 内蔵の CJK 改行）---
+% ※ この環境には xeCJK/ctex が無いため、XeTeX の locale 改行機能を使う。
+\usepackage{fontspec}
+\setmainfont{Noto Sans CJK JP}
+\setsansfont{Noto Sans CJK JP}
+\setmonofont{Noto Sans Mono CJK JP}[Scale=0.92] % ASCII も日本語コメントも表示可
+% 日本語の行分割（単語間スペースの無い CJK を適切に折り返す）
+\XeTeXlinebreaklocale "ja"
+\XeTeXlinebreakskip = 0pt plus 0.1pt minus 0.01pt
+
+% --- 余白 ---
+\usepackage[a4paper,margin=18mm,headheight=14pt]{geometry}
+
+% --- 見出し色 ---
+\usepackage{xcolor}
+\definecolor{headcol}{HTML}{1E3A5F}
+\definecolor{subcol}{HTML}{2563A8}
+\usepackage{sectsty}
+\sectionfont{\color{headcol}\large}
+\subsectionfont{\color{subcol}\normalsize}
+\subsubsectionfont{\color{subcol}\normalsize}
+
+% --- コードブロックの背景（pandoc の Shaded 環境）---
+\definecolor{shadecolor}{HTML}{F1F5F9}
+\setlength{\fboxsep}{4pt}
+
+% --- 引用（blockquote）を左罫線つきに ---
+\usepackage{framed}
+\let\oldquote\quote
+\let\endoldquote\endquote
+\renewenvironment{quote}{%
+  \begin{leftbar}\small\color{black!75}}{%
+  \end{leftbar}}
+
+% --- ヘッダ・フッタ ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small プログラミング I 演習資料}
+\rhead{\small 2026 年度}
+\cfoot{\small \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% --- 表の行間を少し詰める ---
+\renewcommand{\arraystretch}{1.15}
+
+% --- URL/長語の途中改行を許可 ---
+\sloppy
