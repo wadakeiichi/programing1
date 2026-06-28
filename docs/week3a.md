@@ -3,6 +3,35 @@
 **対象**: プログラミング I 受講生
 **目的**: 初期設定のあと、　Week 3b（Python の書き方のルール）に進む前に、設定したはずの VS Code と Dev Container が動くことを確認する。
 
+> **🐳 授業を始める前に — Dev Container が起動しているか必ず確認すること**
+>
+> 毎回多くの学生が **Docker Desktop を起動し忘れている／Dev Container に入っていない** 状態で授業を始めてつまずきます。この確認を始める前に、以下 3 点を **上から順に** 確認してください。
+>
+> **① Docker Desktop が起動しているか**
+>
+> - 🪟 Windows: 通知領域（タスクバー右下、`^` をクリックして表示）に **クジラのアイコン 🐳** が出ているか
+> - 🍎 macOS: メニューバー右上に **クジラのアイコン 🐳** が出ているか
+> - 出ていない場合 → スタート／Launchpad から **Docker Desktop を起動** → クジラが「Docker Desktop is running」状態になるまで **1〜2 分待つ**
+>
+> **② VS Code が Dev Container の中で動いているか**
+>
+> VS Code の **左下の青／緑の表示** を見る：
+>
+> - ✅ **「開発コンテナー: Python3@desktop-linux」** のような表示 → OK
+> - ❌ `><` マークだけ／何も出ていない → 左下の `><` をクリック → **「コンテナーで再度開く」** を選ぶ（初回は数分かかる）
+>
+> **③ ターミナルのプロンプトが Linux になっているか**
+>
+> VS Code のターミナル（`` Ctrl + ` `` または `Ctrl + @`）を開き、プロンプトを確認：
+>
+> ```
+> vscode ➜ /workspaces/programing1_student (main) $   ← ✅ Dev Container の中
+> ```
+>
+> `PS C:\Users\...>`（Windows PowerShell）や `wada@MacBook ~ %`（Mac のターミナル）のような表示は **Dev Container の外** にいるサイン。② に戻ってやり直すこと。
+>
+> 上記いずれかでつまずいたら、`初期設定ガイド2027.md` の Step 8 〜 Step 10 を参照。
+
 ---
 
 ## 0. この資料の使い方
