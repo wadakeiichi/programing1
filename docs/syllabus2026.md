@@ -1,8 +1,8 @@
 # プログラミングI　2026年度シラバス
 
 **対象**: 物理・宇宙系 学部 2 年生
-**形式**: 演習（全 15 回・各 90 分）
-**環境**: VS Code + Dev Container（Python 3, NumPy, Matplotlib, SciPy）+ GitHub Copilot
+**形式**: 演習（全 13 回・各 90 分）
+**環境**: VS Code + Dev Container（Python 3, NumPy, Matplotlib, SciPy）
 **コーディング方式**: `.py` ファイル + `# %%` セル実行
 
 ---
@@ -13,11 +13,10 @@
 2. Python の基本文法を習得し、物理・天文の計算を自力でプログラムできるようになる
 3. NumPy・Matplotlib を用いたデータ処理・可視化ができるようになる
 4. 常微分方程式の数値解法を理解し、物理シミュレーションを実装できるようになる
-5. AI ツール（GitHub Copilot）をコード生成・デバッグに活用し、その出力を批判的に検証できるようになる
 
 ---
 
-## 全 15 回の構成
+## 全 13 回の構成
 
 ### 前半：CUI 基礎 + Python 基礎（Week 1〜10）
 
@@ -36,22 +35,13 @@
 
 ---
 
-### 中盤：AI 活用実践（Week 11）
+### 後半：数値計算・物理シミュレーション（Week 11〜13）
 
 | 回 | テーマ | 内容 | 教材・課題 |
 |----|--------|------|-----------|
-| 11 | **AI 活用実践（1）：セットアップと基本操作** | GitHub Education Pack の申請・GitHub Copilot の有効化・インライン補完と Copilot Chat の使い方・AI にバグを探させる演習・自然言語からコードを生成させる演習・プロンプトの書き方の工夫・AI 出力の検証方法 | 別途配布 |
-
----
-
-### 後半：数値計算・物理シミュレーション（Week 12〜15）
-
-| 回 | テーマ | 内容 | 教材・課題 |
-|----|--------|------|-----------|
-| 12 | **常微分方程式の数値解法** | scipy.integrate.solve_ivp の使い方・2 階 ODE → 連立 1 階 ODE への変換・指数減衰（解析解との比較）・単振り子（小振幅と大振幅） | `week12.md`／練習問題 8 |
-| 13 | **フィッティング・コマンドライン・バッチ処理** | scipy.optimize.curve_fit によるフィッティング・初期値の重要性・argparse によるコマンドライン引数・bash スクリプトによるパラメータスキャン | `week13.md`／練習問題 9 |
-| 14 | **AI 活用実践（2）：数値計算 × AI** | Week 12 の ODE コードを Copilot Chat に説明させる・AI と協力してシミュレーションを拡張（空気抵抗付き斜方投射・減衰振動のパターン比較など）・結果の物理的解釈と発表 | 別途配布 |
-| 15 | **期末課題** | 教員指定の 2〜3 テーマから 1 問を選択して実装・提出（数値積分と誤差解析／ODE シミュレーション／フィッティングと可視化など） | 問題文は別途配布 |
+| 11 | **常微分方程式の数値解法** | scipy.integrate.solve_ivp の使い方・2 階 ODE → 連立 1 階 ODE への変換・指数減衰（解析解との比較）・単振り子（小振幅と大振幅） | `week11.md`／練習問題 8 |
+| 12 | **フィッティング・コマンドライン・バッチ処理** | scipy.optimize.curve_fit によるフィッティング・初期値の重要性・argparse によるコマンドライン引数・bash スクリプトによるパラメータスキャン | `week12.md`／練習問題 9 |
+| 13 | **期末課題** | 教員指定の 2〜3 テーマから 1 問を選択して実装・提出（数値積分と誤差解析／ODE シミュレーション／フィッティングと可視化など） | 問題文は別途配布 |
 
 ---
 
@@ -70,8 +60,8 @@
 | `week8.md` | Week 8 | 辞書・ファイル入出力（CSV／バイナリ） |
 | `week9.md` | Week 9 | pandas によるデータ解析（read_csv・列アクセス・条件絞り込み） |
 | `week10.md` | Week 10 | 2D 配列・meshgrid・contourf・imshow・colorbar |
-| `week12.md` | Week 12 | 常微分方程式の数値解法（solve_ivp） |
-| `week13.md` | Week 13 | フィッティング（curve_fit）・argparse・bash |
+| `week11.md` | Week 11 | 常微分方程式の数値解法（solve_ivp） |
+| `week12.md` | Week 12 | フィッティング（curve_fit）・argparse・bash |
 
 ---
 
@@ -80,19 +70,17 @@
 | 項目 | 配点 | 備考 |
 |------|------|------|
 | 随時課題（練習問題 0〜9） | 50% | 各回の練習問題を翌週の授業開始までに提出 |
-| 期末課題（Week 15） | 50% | 指定テーマから 1 問選択して実装・提出 |
+| 期末課題（Week 13） | 50% | 指定テーマから 1 問選択して実装・提出 |
 
 ---
 
-## AI 利用ポリシー
+## AI 利用について
 
-- 授業では **GitHub Copilot**（GitHub Education Pack で無料利用可）を標準 AI ツールとして使用する
-- GitHub Copilot は VS Code 内でインライン補完（コードを書くと続きを提案）と Copilot Chat（チャット形式で質問・コード生成）の 2 つの機能を持つ
-- Week 11 の AI 活用実践で GitHub Education Pack の申請と Copilot の有効化を行う（Week 1〜10 は AI なしで基礎を身につける）
-- 練習問題・期末課題で AI を使用してよいが、以下のルールを守ること:
+- 本授業では AI ツール（GitHub Copilot 等）の使い方は扱わない（数値計算・可視化の基礎習得に集中する）。
+- 練習問題・期末課題で AI を補助的に使うことは禁止しないが、以下のルールを守ること:
   1. AI が生成したコードを**理解せずにそのまま提出しない**
   2. AI の出力は必ず**自分で実行して検証する**
-  3. AI を使用した箇所は**コメントで明記する**（例: `# Copilot で生成、修正済み`）
+  3. AI を使用した箇所は**コメントで明記する**
 
 ---
 
@@ -110,11 +98,9 @@
 | 8 | dict `{}`, np.savetxt, np.loadtxt, np.save, np.load, csv |
 | 9 | pandas (pd.read_csv), DataFrame, 列アクセス, 条件絞り込み |
 | 10 | 2D 配列, np.meshgrid, plt.contourf, plt.contour, plt.imshow, plt.colorbar |
-| 11 | GitHub Education Pack, GitHub Copilot インライン補完, Copilot Chat |
-| 12 | scipy.integrate.solve_ivp, ODE の連立化 |
-| 13 | scipy.optimize.curve_fit, argparse, bash の for ループ |
-| 14 | AI との協働パターン（問い → 生成 → 検証 → 発展） |
-| 15 | （総合演習・期末課題） |
+| 11 | scipy.integrate.solve_ivp, ODE の連立化 |
+| 12 | scipy.optimize.curve_fit, argparse, bash の for ループ |
+| 13 | （総合演習・期末課題） |
 
 ---
 
