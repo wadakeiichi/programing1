@@ -920,6 +920,32 @@ Remove-Item "$env:USERPROFILE\.docker"     -Recurse -Force -ErrorAction Silently
 <p>⚠️ <strong>再起動が必要！</strong> その後 PC を再起動（<code>shutdown /r /t 0</code>）してから Step 7.1（WSL2）から順にやり直してください。</p>
 </blockquote>
 
+<h2>B-6. <code>wsl -l -v</code> に <code>docker-desktop</code> が出て <code>Ubuntu</code> に <code>*</code> が付く（＝正常）</h2>
+
+<p><strong>状況</strong>: <code>wsl -l -v</code>（または <code>wsl --status</code>）の一覧に <code>Ubuntu</code> と <code>docker-desktop</code> の 2 つが並び、<code>Ubuntu</code> の左に <code>*</code> が付いている。</p>
+
+<pre><code>  NAME              STATE      VERSION
+* Ubuntu            Running    2
+  docker-desktop    Running    2</code></pre>
+
+<p><strong>これは正常な状態です。問題ありません。</strong></p>
+
+<ul>
+<li><code>*</code> は <strong>既定（デフォルト）の WSL ディストリビューション</strong> を表す印。<code>wsl</code> を無指定で起動したときに立ち上がるものを示す。<strong>作業用の <code>Ubuntu</code> に付いているのが望ましい状態</strong>。</li>
+<li><code>docker-desktop</code> は <strong>Docker Desktop が WSL2 バックエンド用に自動で作る専用ディストロ</strong>。学生が直接触るものではなく、一覧に並ぶこと自体が <strong>Docker の WSL 連携が有効に動いているサイン</strong>。両方が <code>Running</code> でも問題ない。</li>
+</ul>
+
+<p><strong>念のため確認すると安心な 2 点</strong>:</p>
+
+<ol>
+<li><code>Ubuntu</code> の <code>VERSION</code> 列が <strong><code>2</code></strong>（WSL2）になっているか。もし <code>1</code> なら次で変換：<code>wsl --set-version Ubuntu 2</code></li>
+<li>Docker Desktop の <strong>Settings → Resources → WSL Integration</strong> で <strong><code>Ubuntu</code> が ON</strong> になっているか。</li>
+</ol>
+
+<blockquote>
+<p>仮に <code>*</code> が <code>docker-desktop</code> 側に付いていても致命的ではありませんが、扱いやすいよう <code>wsl --set-default Ubuntu</code> で <code>Ubuntu</code> を既定に戻しておくとよいです。</p>
+</blockquote>
+
 <hr>
 
 <h1>付録 C: macOS トラブル FAQ</h1>
