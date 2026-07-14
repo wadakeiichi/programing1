@@ -622,7 +622,22 @@ docker run --rm hello-world</code></pre>
 
 <p>最後のコマンドで <code>Hello from Docker!</code> が出れば成功です。</p>
 
-<h3>Step 8.2: 自動起動の設定</h3>
+<h3>Step 8.2: Windows で Ubuntu との連携を確認</h3>
+
+<p>Windows では Docker Desktop が WSL2 上の <code>Ubuntu</code> と連携していないと、VS Code の Dev Container が起動できないことがあります。特に「コンテナーの設定中にエラーが発生しました」と出て、ログに <code>\\wsl.localhost\Ubuntu\mnt\wslg\...</code> や <code>wayland-0</code> が見える場合は、ここを確認します。</p>
+
+<ol>
+<li>Docker Desktop を開く</li>
+<li><strong>Settings</strong> → <strong>Resources</strong> → <strong>WSL Integration</strong> を開く</li>
+<li><strong><code>Ubuntu</code> を ON</strong> にする</li>
+<li><strong>Apply &amp; Restart</strong> を押す</li>
+<li>Docker Desktop が <code>running</code> になるまで待つ</li>
+<li>VS Code を開き直し、<strong>「コンテナーで再度開く」</strong> または <strong>「Rebuild Container」</strong> を実行する</li>
+</ol>
+
+<p>この設定が OFF のままだと、Docker Desktop 自体は起動していても、VS Code から <code>Ubuntu</code> 側の作業フォルダや WSLg 関連のパスを正しく扱えず、Dev Container の起動だけが失敗することがあります。</p>
+
+<h3>Step 8.3: 自動起動の設定</h3>
 <p>ログイン時に Docker Desktop が自動で起動するようにしておくと便利です。</p>
 <ul>
 <li><strong>🍎 macOS</strong>: システム設定 → 一般 → ログイン項目と機能拡張 → ログイン時に開く に Docker を追加（<code>+</code> ボタン）</li>
@@ -945,6 +960,37 @@ Remove-Item "$env:USERPROFILE\.docker"     -Recurse -Force -ErrorAction Silently
 <blockquote>
 <p>仮に <code>*</code> が <code>docker-desktop</code> 側に付いていても致命的ではありませんが、扱いやすいよう <code>wsl --set-default Ubuntu</code> で <code>Ubuntu</code> を既定に戻しておくとよいです。</p>
 </blockquote>
+
+<h2>B-7. Dev Container 起動時に <code>\\wsl.localhost\Ubuntu\mnt\wslg\...</code> や <code>wayland-0</code> が出て失敗する</h2>
+
+<p><strong>症状</strong>: VS Code で <strong>「コンテナーで再度開く」</strong> または <strong>「Rebuild Container」</strong> を実行したとき、次のような表示で止まる。</p>
+
+<ul>
+<li>「コンテナーの設定中にエラーが発生しました」</li>
+<li>ログに <code>\\wsl.localhost\Ubuntu\mnt\wslg\runtime-dir\wayland-0</code> が出る</li>
+<li>最後に <code>Exit code 1</code> が出る</li>
+</ul>
+
+<p><strong>原因</strong>: Docker Desktop の <strong>WSL Integration</strong> で <code>Ubuntu</code> が OFF になっている可能性が高い。<br>
+Docker Desktop は Windows 上のアプリですが、授業の Dev Container は WSL2 の <code>Ubuntu</code> と連携して動きます。この連携が OFF だと、Docker Desktop は起動していても、VS Code Dev Containers が <code>Ubuntu</code> 側の作業フォルダや WSLg のソケットを正しくマウントできず、起動処理の途中で失敗します。</p>
+
+<p><strong>対処</strong>:</p>
+
+<ol>
+<li>Docker Desktop を開く</li>
+<li><strong>Settings</strong> → <strong>Resources</strong> → <strong>WSL Integration</strong> を開く</li>
+<li><strong><code>Ubuntu</code> を ON</strong> にする</li>
+<li><strong>Apply &amp; Restart</strong> を押す</li>
+<li>Docker Desktop が <code>running</code> になるまで待つ</li>
+<li>VS Code を開き直し、<strong>「コンテナーで再度開く」</strong> または <strong>「Rebuild Container」</strong> を実行する</li>
+</ol>
+
+<p>確認用に、管理者 PowerShell で次を実行してもよい。</p>
+
+<pre><code>wsl -l -v
+docker run --rm hello-world</code></pre>
+
+<p><code>docker run --rm hello-world</code> が成功するのに Dev Container だけ失敗する場合は、特に WSL Integration の <code>Ubuntu</code> が OFF になっていないか確認してください。</p>
 
 <hr>
 
