@@ -69,14 +69,17 @@ print(sol.y[0])
 **初期値問題** とは、「ある時刻 t₀ での値（初期値）が分かっているとき、そこから微分方程式に従って時間発展させる」問題。`solve_ivp` は次の形で使う。
 
 ```python
+# 【書き方の型】← そのまま実行しないこと（下の「動く最小の例」を打ち込むこと）
 from scipy.integrate import solve_ivp
 
 def rhs(t, y):
     # dy/dt を計算して返す（y は現在の状態）
-    return dydt
+    return dydt                                    # ← 実際は具体的な式を書く
 
-sol = solve_ivp(rhs, [t0, t1], [y0], t_eval=時刻の配列)
+sol = solve_ivp(rhs, [t0, t1], [y0], t_eval=時刻の配列)   # ← t0, t1, y0 は仮の名前
 ```
+
+> **⚠ 上のコードは「書き方の型」であり、そのままでは動きません。** `t0`・`t1`・`y0`・`dydt`・`時刻の配列` はすべて **仮の名前** なので、実行すると `NameError: name 't0' is not defined` などになります。**打ち込んで動かすのは、下の「動く最小の例」から** にしてください。
 
 - **`rhs(t, y)`**: 右辺（right-hand side）。**現在の時刻 t と状態 y から、微分 dy/dt を返す** 関数。
 - **`[t0, t1]`**: 積分する時間の区間（開始・終了）。
@@ -85,11 +88,21 @@ sol = solve_ivp(rhs, [t0, t1], [y0], t_eval=時刻の配列)
 
 戻り値 `sol` から、`sol.t`（時刻の配列）と `sol.y`（解の配列）を取り出せる。**`sol.y` は 2 次元配列** で、`sol.y[0]` が 1 つ目の変数の時間変化。
 
+次が **実際に動く最小の例**（dy/dt = −0.5·y を解く）。ここからは `week11.py` に打ち込んで実行すること。
+
 ```python
+# 動く最小の例
 import numpy as np
+from scipy.integrate import solve_ivp
+
+def rhs(t, y):
+    return -0.5 * y      # dy/dt = -k y （k = 0.5）
+
 sol = solve_ivp(rhs, [0, 10], [1.0], t_eval=np.linspace(0, 10, 100))
 t = sol.t
-y = sol.y[0]      # 1 変数なら [0] で取り出す
+y = sol.y[0]             # 1 変数なら [0] で取り出す
+print(t[:3])
+print(y[:3])
 ```
 
 #### 1 階の微分方程式 ― 指数減衰

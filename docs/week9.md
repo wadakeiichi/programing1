@@ -71,7 +71,7 @@ hot = df[df["temp_K"] > 6000]
 print(hot)
 ```
 
-> **注意**: ファイル `stars.csv` を `pd.read_csv` で読み込む例は **例 1 以降** に出てくる。`stars.csv` は例 1 を実行して初めて作られるので、それより前に `pd.read_csv("stars.csv")` を実行すると `FileNotFoundError` になる。上の導入セルのように、まずは **辞書から作った DataFrame** で pandas の操作に慣れること。
+> **注意**: この先の解説・例題・練習問題では、データファイル `stars.csv` を `pd.read_csv` で読み込む。`stars.csv` は文法解説の中の **【準備】のセル** で作るので、**そのセルを必ず先に実行すること**（作る前に `pd.read_csv("stars.csv")` を実行すると `FileNotFoundError` になる）。上の導入セルのように、まずは **辞書から作った DataFrame** で pandas の操作に慣れてから進めばよい。
 
 > **指示**: 以降のグレイ背景のコードは、**そのまま読むだけでなく、必ず `week9.py` に `# %%` で区切りながら入力して動作を確認すること**。例題部分も同様に、自分で入力して試すこと。コピペではなく **自分の手で打ち込む** ことで身につく。
 
@@ -118,8 +118,28 @@ print(df)
 
 実際のデータは CSV ファイルで配られることが多い。**`pd.read_csv`** は、先頭行を **列名（見出し）** として自動で認識し、DataFrame にして読み込む。
 
+**準備 ― まず読み込む CSV を作る**: 手元に `stars.csv` がまだ無いので、最初に作っておく。**このセルを必ず先に実行すること**（これ以降の解説・例題・練習問題はすべてこの `stars.csv` を使う）。
+
 ```python
+# 【準備】stars.csv を作る（最初に必ず実行すること）
+catalog = """name,temp_K,mass,radius
+Sun,5800,1.00,1.00
+Sirius,9940,2.06,1.71
+Betelgeuse,3500,16.5,764
+Proxima,3040,0.12,0.15
+Rigel,12100,21.0,78.9
+"""
+with open("stars.csv", "w", encoding="utf-8") as f:
+    f.write(catalog)
+print("stars.csv を作成した")
+```
+
+作った CSV を `pd.read_csv` で読み込む。
+
+```python
+import pandas as pd
 df = pd.read_csv("stars.csv")
+print(df)
 ```
 
 Week 8 の `np.loadtxt` と違い、`skiprows` や `delimiter` を指定しなくても、見出し付き CSV をそのまま読める。文字列の列（天体名など）が混ざっていても扱える点も `np.loadtxt` との大きな違い。
@@ -206,7 +226,7 @@ plt.savefig("scatter.png")
 
 恒星のカタログを CSV として作り、pandas で読み込んで「高温の星だけ」を絞り込み、統計量を確認する。**まず CSV を用意し、それを `pd.read_csv` で読む** という実データ解析の流れを体験する。
 
-> **⚠ 必ず最初にこの例 1 を実行すること**: この例 1 が `stars.csv` を作る。**例 2 と練習問題 6 はこの `stars.csv` を読み込むので、例 1 を実行していないと `FileNotFoundError` で動かない**。授業を始めるときも、まず例 1 のセルを実行して `stars.csv` を作ってから先に進むこと。
+> **⚠ `stars.csv` が必要**: この例 1 は、文法解説の【準備】セルと同じ `stars.csv` を作り直してから読み込む **自己完結した例**（【準備】を実行済みでもそのまま動く）。**例 2 と練習問題 6 もこの `stars.csv` を使う** ので、ファイルが無い状態で例 2 や練習問題から始めると `FileNotFoundError` になる。**必ず【準備】セルかこの例 1 を先に実行しておくこと**。
 
 ```python
 # week9_ex1.py
