@@ -1,2 +1,5 @@
 .DS_Store
 docs/*.pdf
+
+# 未公開教材（学生に配布するときに該当行を削除する）
+docs/week13.md
