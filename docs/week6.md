@@ -117,12 +117,14 @@ plt.figure(figsize=(8, 4))      # 図のサイズ（横, 縦）[インチ]
 plt.plot(x, y)                   # 折れ線グラフ
 plt.xlabel('x [rad]')           # 横軸ラベル（単位必須）
 plt.ylabel('sin(x)')            # 縦軸ラベル
-plt.title('サイン波')           # タイトル
+plt.title('sine wave')          # タイトル（※グラフ内の文字は英語で書く）
 plt.grid(True)                  # グリッド表示
 plt.tight_layout()              # 余白自動調整
 plt.savefig('sin.png', dpi=150) # ファイル保存（必須）
 plt.show()                      # 画面表示
 ```
+
+> **⚠ グラフの中の文字は英語で書くこと**: `title` や `xlabel`、`label` に **日本語を書くと □（豆腐）に化ける**。matplotlib が標準で使うフォント（DejaVu Sans）に日本語の字が入っていないためで、エラーにはならず警告が出て文字だけが四角くなる。この授業では **グラフ内の文字は英語** で書くこと（`'高さ y [m]'` ではなく `'height y [m]'`）。日本語の説明は、コメントやレポート本文の側に書けばよい。
 
 > **`figsize=(8, 4)` の意味**: 図の大きさを **（横幅, 高さ）インチ単位** で指定する。`(8, 4)` なら横長。`dpi=150`（dots per inch）と組み合わせると、保存される画像の解像度は **横 8×150 = 1200 px、縦 4×150 = 600 px** になる。グラフが詰まって見えるときは `figsize` を大きくする。
 
@@ -133,11 +135,28 @@ plt.show()                      # 画面表示
 `plt.plot()` には線の見た目を変えるオプションを渡せる。物理のグラフでは複数の曲線を区別するために必須。
 
 ```python
+# 動く例：オプションを試す（x, y, z をここで用意する）
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 2 * np.pi, 100)
+y = np.sin(x)
+z = np.cos(x)
+
 plt.plot(x, y, color='red', linestyle='--', linewidth=2, label='sin')
 plt.plot(x, z, color='blue', marker='.', markersize=3, label='cos')
+plt.legend()
+plt.savefig('options.png', dpi=150)
+plt.show()
+```
 
+同じ指定は **省略記法** でも書ける（色と線種をまとめた短い文字列）。上のセルで `x, y, z` を作ってあれば、続けて実行できる。
+
+```python
 plt.plot(x, y, 'r--')   # 省略記法：色＋線種をまとめて 'r--'（赤の破線）
 plt.plot(x, z, 'b.')    # 省略記法：'b.'（青の点）
+plt.savefig('options2.png', dpi=150)
+plt.show()
 ```
 
 | オプション | 意味 | よく使う値 |
@@ -245,12 +264,12 @@ for theta_deg in angles:
     t = np.linspace(0, T_fly, 200)
     x = v0 * np.cos(theta) * t
     y = v0 * np.sin(theta) * t - 0.5 * g * t**2
-    plt.plot(x, y, label=f'θ = {theta_deg}°')
+    plt.plot(x, y, label=f'theta = {theta_deg} deg')
 
 plt.axhline(0, color='black', linewidth=0.8, linestyle='--')
-plt.xlabel('水平距離 x [m]')
-plt.ylabel('高さ y [m]')
-plt.title(f'斜方投射（初速度 {v0} m/s）')
+plt.xlabel('horizontal distance x [m]')
+plt.ylabel('height y [m]')
+plt.title(f'Projectile motion (v0 = {v0} m/s)')
 plt.legend(loc='upper right')
 plt.grid(True, alpha=0.4)
 plt.tight_layout()
@@ -261,6 +280,26 @@ plt.show()
 ---
 
 ### 例 2 ― 正規分布のヒストグラムと理論曲線
+
+サンプル数 N を 100 → 1000 → 10000 と増やしながらヒストグラムを描き、**データ数が増えるほど理論曲線に近づく** ことを 3 パネル（`subplots`）で確認する。
+
+#### 準備 ― 乱数でデータを作る
+
+この例では、実測データの代わりに **乱数** でサンプルを作る。書き方は次のとおり。
+
+```python
+import numpy as np
+
+rng = np.random.default_rng(seed=42)   # 乱数の生成器を用意する（42 は「種」）
+samples = rng.normal(0, 1, 5)          # 平均 0・標準偏差 1 の正規分布から 5 個
+print(samples)
+```
+
+- **`np.random.default_rng(seed=42)`**: 乱数を作る装置（generator）を用意し、`rng` という名前で使う。
+- **`seed=42` は「種（シード）」**: 乱数の出発点を決める番号。**同じ種なら毎回まったく同じ乱数列** が出る。こうしておくと、実行するたびに結果が変わらず、**教材やレポートの数値を再現できる**（再現性）。種を変えれば別の乱数になる。
+- **`rng.normal(平均, 標準偏差, 個数)`**: **正規分布（ガウス分布）** に従う乱数を指定個数作る。測定誤差は正規分布に従うことが多いので、測定データの模擬によく使われる。
+
+> **ポイント**: 乱数は「毎回でたらめ」に見えるが、**種を固定すれば何度でも同じ結果** になる。研究でも、計算をやり直したときに同じ結果が出るよう **種を記録しておく** のが基本作法である。
 
 ```python
 # week6_ex2.py
@@ -275,22 +314,24 @@ for ax, N in zip(axes, [100, 1000, 10000]):
     samples = rng.normal(0, 1, N)
 
     ax.hist(samples, bins=40, density=True,
-            alpha=0.6, color='steelblue', label='ヒストグラム')
+            alpha=0.6, color='steelblue', label='histogram')
 
     x = np.linspace(-4, 4, 200)
     y = np.exp(-x**2 / 2) / np.sqrt(2 * np.pi)
-    ax.plot(x, y, 'r-', linewidth=2, label='理論値')
+    ax.plot(x, y, 'r-', linewidth=2, label='theory')
 
     ax.set_xlabel('x')
-    ax.set_ylabel('確率密度')
+    ax.set_ylabel('probability density')
     ax.set_title(f'N = {N:,}')
     ax.legend(fontsize=8)
 
-plt.suptitle('標準正規分布のサンプリング', fontsize=13)
+plt.suptitle('Sampling from the standard normal distribution', fontsize=13)
 plt.tight_layout()
 plt.savefig('normal_dist.png', dpi=150)
 plt.show()
 ```
+
+**実行結果の確認ポイント**: `normal_dist.png` に 3 つのパネルが並び、**N が 100 → 1000 → 10000 と増えるほど、青いヒストグラムが赤い理論曲線（正規分布）に近づいていく** ことが読み取れれば成功。文字が □ になっていないことも確認する。
 
 ---
 
